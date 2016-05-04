@@ -1,0 +1,6 @@
+{
+  "gitbook": ">=2.0.0",
+  "title":"InsightJVM Notebook",
+  "language":"zh-cn",
+  "description":"《深入理解Java虚拟机》阅读笔记"
+}
