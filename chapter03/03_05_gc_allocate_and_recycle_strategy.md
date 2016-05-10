@@ -139,7 +139,51 @@ Heap
 No shared spaces configured.
 ```
 
+当程序执行到最后一条一句`allocation3 = new byte[4 * _1MB];`的时候，
+
 ##动态对象年龄判断
 
-为了能更好地适应不同程序的内存状况，虚拟机并不是永远地要求对象的年龄必须达到了MaxTenuringThreshold才能晋升老年代。如果在Survivor空间中相同年龄所有对象的大小综合大于Survivor空间的一般，年龄大于或等于该年龄的对象就可以直接进入老年代，无序等到MaxTenuringThreshold中要求的年龄。
+为了能更好地适应不同程序的内存状况，虚拟机并不是永远地要求对象的年龄必须达到了MaxTenuringThreshold才能晋升老年代。如果在Survivor空间中相同年龄所有对象的大小综合大于Survivor空间的一般，年龄大于或等于该年龄的对象就可以直接进入老年代，无须等到MaxTenuringThreshold中要求的年龄。
 
+```java
+private static final int _1MB = 1024 * 1024;
+/**
+ * 4.动态对象年龄判定
+ * VM参数：-XX:+UseSerialGC -verbose:gc  -Xms20M -Xmx20M -Xmn10M -XX:+PrintGCDetails -XX:SurvivorRatio=8 -XX:MaxTenuringThreshold=15 -XX:+PrintTenuringDistribution
+ */
+public static void testTenuringThreshold2() {
+    byte[] allocation1, allocation2, allocation3, allocation4;
+    //allocation1+allocation2 大于 Survivor空间一半
+    allocation1 = new byte[_1MB / 4];
+    allocation2 = new byte[_1MB / 4];
+    allocation3 = new byte[4 * _1MB];
+    allocation4 = new byte[4 * _1MB];
+    allocation4 = null;
+    allocation4 = new byte[4 * _1MB];
+}
+```
+
+程序GC日志：
+
+```
+[GC[DefNew
+Desired survivor size 524288 bytes, new threshold 1 (max 15)
+- age   1:     913544 bytes,     913544 total
+: 5935K->892K(9216K), 0.0062980 secs] 5935K->4988K(19456K), 0.0063220 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC[DefNew
+Desired survivor size 524288 bytes, new threshold 15 (max 15)
+- age   1:       2264 bytes,       2264 total
+: 5156K->2K(9216K), 0.0018570 secs] 9252K->4970K(19456K), 0.0018850 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+Heap
+ def new generation   total 9216K, used 4236K [0x00000007f9a00000, 0x00000007fa400000, 0x00000007fa400000)
+  eden space 8192K,  51% used [0x00000007f9a00000, 0x00000007f9e22798, 0x00000007fa200000)
+  from space 1024K,   0% used [0x00000007fa200000, 0x00000007fa2008d8, 0x00000007fa300000)
+  to   space 1024K,   0% used [0x00000007fa300000, 0x00000007fa300000, 0x00000007fa400000)
+ tenured generation   total 10240K, used 4968K [0x00000007fa400000, 0x00000007fae00000, 0x00000007fae00000)
+   the space 10240K,  48% used [0x00000007fa400000, 0x00000007fa8da018, 0x00000007fa8da200, 0x00000007fae00000)
+ compacting perm gen  total 21248K, used 2933K [0x00000007fae00000, 0x00000007fc2c0000, 0x0000000800000000)
+   the space 21248K,  13% used [0x00000007fae00000, 0x00000007fb0dd460, 0x00000007fb0dd600, 0x00000007fc2c0000)
+No shared spaces configured.
+```
+
+当程序执行到最后一个语句`allocation4 = new byte[4 * _1MB];`时，JVM发现Eden区不够分配4M内存，于是启动了一次Minor GC。这时候allocation1、allocation2、allocation3都是存活的，于是GC将其挪到Survivor区，在将allocation3挪到Survivor区的时候发现Survivor区并没有4M那么大，于是直接将其放到老年代。而allocation1、allocation2可以挪到Survivor区，而此时allocation1和allocation2加起来大于等于Survivor空间的一半，于是allocation1和allocation2也直接被挪到老年代了，也就是说此时老年代共有4.5M左右的对象。从GC日志中，我们可以看到老年代一共有10M，占用了48%，也就是占用了大概4.8M，与我们的计算大致相符。而此时allocation4所占用的内存就被回收了，到这里GC结束了。GC结束之后，JVM继续给`allocation4 = new byte[4 * _1MB];`语句的allocation4分配4M内存，此时直接分配在了Eden区。从GC日志中，我们可以看到Eden区一共有8M内存，占用了51%左右，也就是占用了大概4M内存，与我们计算的大致相符。
