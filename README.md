@@ -2,8 +2,9 @@
 
 现在就加入 [**FrontSeat**](http://frontseat.io) 一个专注前端的开源中文社区！
 
+点击[**这里**](SUMMARY.md)开始阅读！
 
-点击[**这里**](http://chanshuyi.github.io/insightjvm_notebook/)开始阅读！
+<!--点击[**这里**](http://chanshuyi.github.io/insightjvm_notebook/)开始阅读！-->
 
 《深入理解Java虚拟机》笔记本的 GitHub 地址在[这里](https://github.com/ChanShuYi/insightjvm_notebook)。如果你觉得这个项目不错，请点击 Star 一下，您的支持是我最大的动力。
 
@@ -22,7 +23,7 @@
 |第三章|[Java中的引用类型](chapter03/03_01_reference_type.md)|![](http://progressed.io/bar/100)|
 |第四章|[虚拟机性能监控与故障处理工具](chapter04/04_00_monitor_tool.md)|![](http://progressed.io/bar/90)|
 |第五章|[调优案例分析与实战](chapter05/05_00_optimize_demo.md)|![](http://progressed.io/bar/20)|
-|第六章|[[虚拟机执行子系统](chapter06/06_00_jvm_subsystem.md)|![](http://progressed.io/bar/80)|
+|第六章|[虚拟机执行子系统](chapter06/06_00_jvm_subsystem.md)|![](http://progressed.io/bar/80)|
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This work by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.github.com/ChanShuYi" property="cc:attributionName" rel="cc:attributionURL">ChanShuYi</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
 
