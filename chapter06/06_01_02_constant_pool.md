@@ -111,12 +111,134 @@ Constant pool:
 
 [补充常量池14种常量项的结构总表]
 
+<table>
+    <tr align="center">
+        <td>常量</td><td>项目</td><td>类型</td><td>描述</td>
+    </tr>
+    <!-- 1 -->
+    <tr align="center">
+    	<td  rowspan="3">CONSTANT_Utf8_info</td><td>tag</td><td>u1</td><td>值为1</td>
+    </tr>
+    <tr align="center">
+    	<td>length</td><td>u2</td><td>UTF-8编码的字符串占用的字节数</td>
+    </tr>
+    <tr align="center">
+    	<td>bytes</td><td>u1</td><td>长度为length的UTF-8编码的字符串</td>
+    </tr>
+    <!-- 2 -->
+    <tr align="center">
+    	<td  rowspan="2">CONSTANT_Integer_info</td><td>tag</td><td>u1</td><td>值为3</td>
+    </tr>
+    <tr align="center">
+    	<td>bytes</td><td>u4</td><td>按照高位在前存储的int值</td>
+    </tr>
+    <!-- 3 -->
+    <tr align="center">
+    	<td  rowspan="2">CONSTANT_Float_info</td><td>tag</td><td>u1</td><td>值为4</td>
+    </tr>
+    <tr align="center">
+    	<td>bytes</td><td>u4</td><td>按照高位在前存储的float值</td>
+    </tr>
+    <!-- 4 -->
+    <tr align="center">
+    	<td  rowspan="2">CONSTANT_Long_info</td><td>tag</td><td>u1</td><td>值为5</td>
+    </tr>
+    <tr align="center">
+    	<td>bytes</td><td>u8</td><td>按照高位在前存储的long值</td>
+    </tr>
+    <!-- 5 -->
+    <tr align="center">
+    	<td  rowspan="2">CONSTANT_Double_info</td><td>tag</td><td>u1</td><td>值为6</td>
+    </tr>
+    <tr align="center">
+    	<td>bytes</td><td>u8</td><td>按照高位在前存储的double值</td>
+    </tr>
+    <!-- 6 -->
+    <tr align="center">
+    	<td  rowspan="2">CONSTANT_Class_info</td><td>tag</td><td>u1</td><td>值为7</td>
+    </tr>
+    <tr align="center">
+    	<td>index</td><td>u2</td><td>指向全限定名常量项的索引</td>
+    </tr>
+    <!-- 7 -->
+    <tr align="center">
+    	<td  rowspan="2">CONSTANT_String_info</td><td>tag</td><td>u1</td><td>值为8</td>
+    </tr>
+    <tr align="center">
+    	<td>index</td><td>u2</td><td>指向字符串字面量的索引</td>
+    </tr>
+    <!-- 8 -->
+    <tr align="center">
+    	<td  rowspan="3">CONSTANT_Fieldref_info</td><td>tag</td><td>u1</td><td>值为9</td>
+    </tr>
+    <tr align="center">
+    	<td>index</td><td>u2</td><td>指向声明字段的类或者接口描述符CONSTANT_Class_info的索引项</td>	
+    </tr>
+    <tr align="center">
+    	<td>index</td><td>u2</td><td>指向字段描述符CONSTANT_NameAndType的索引项</td>
+    </tr>
+    <!-- 9 -->
+    <tr align="center">
+    	<td  rowspan="3">CONSTANT_Methodref_info</td><td>tag</td><td>u1</td><td>值为10</td>
+    </tr>
+    <tr align="center">
+    	<td>index</td><td>u2</td><td>指向声明方法的类描述符CONSTANT_Class_info的索引项</td>	
+    </tr>
+    <tr align="center">
+    	<td>index</td><td>u2</td><td>指向名称及类型描述符CONSTANT_NameAndType的索引项</td>
+    </tr>
+    <!-- 10 -->
+    <tr align="center">
+    	<td  rowspan="3">CONSTANT_InterfaceMethodref_info</td><td>tag</td><td>u1</td><td>值为11</td>
+    </tr>
+    <tr align="center">
+    	<td>index</td><td>u2</td><td>指向声明方法的接口描述符CONSTANT_Class_info的索引项</td>	
+    </tr>
+    <tr align="center">
+    	<td>index</td><td>u2</td><td>指向名称及类型描述符CONSTANT_NameAndType的索引项</td>
+    </tr>
+    <!-- 11 -->
+    <tr align="center">
+    	<td  rowspan="3">CONSTANT_NameAndType_info</td><td>tag</td><td>u1</td><td>值为12</td>
+    </tr>
+    <tr align="center">
+    	<td>index</td><td>u2</td><td>指向该字段或方法名称常量项的索引</td>	
+    </tr>
+    <tr align="center">
+    	<td>index</td><td>u2</td><td>指向该字段或方法描述符常量项的索引</td>
+    </tr>
+    <!-- 12 -->
+    <tr align="center">
+    	<td  rowspan="3">CONSTANT_MethodHandle_info</td><td>tag</td><td>u1</td><td>值为15</td>
+    </tr>
+    <tr align="center">
+    	<td>reference_kind</td><td>u1</td><td>值必须在1~9之间（包括1和9），它决定了方法句柄的类型。方法句柄类型的值表示方法句柄的字节码行为</td>	
+    </tr>
+    <tr align="center">
+    	<td>reference_index</td><td>u2</td><td>值必须是对常量池的有效索引</td>
+    </tr>
+    <!-- 13 -->
+    <tr align="center">
+    	<td  rowspan="2">CONSTANT_MethodType_info</td><td>tag</td><td>u1</td><td>值为16</td>
+    </tr>
+    <tr align="center">
+    	<td>descriptor_index</td><td>u2</td><td>值必须是对常量池的有效索引，常量池在该索引处的项必须是CONSTANT_Utf8_info结构，表示方法的描述符</td>	
+    </tr>  
+    <!-- 14 -->
+    <tr align="center">
+    	<td  rowspan="3">CONSTANT_InvokeDynamic_info</td><td>tag</td><td>u1</td><td>值为18</td>
+    </tr>
+    <tr align="center">
+    	<td>bootstrap_method_attr_index</td><td>u2</td><td>值必须是对当前Class文件中引导方法表的bootstrap_methods[]数组的有效索引</td>	
+    </tr>
+    <tr align="center">
+    	<td>name_and_type_index</td><td>u2</td><td>值必须是对当前常量池的有效索引，常量池在该索引处的项必须是CONSTANT_NameAndType_info结构，表示方法名和方法描述符</td>
+    </tr>
+</table>
 
+有兴趣的朋友可以分析一下剩余的16个常量，下面是我分析后的结果。
 
-
-
-
-
+```bash
 CA FE BA BE    魔数  
 00 00  次版本号
 00 33  主版本号（JDK1.7.0）
@@ -173,7 +295,4 @@ CA FE BA BE    魔数
 00 10 参数1，常量字符串占用字节数，这里占用了16个字节
 6A 61 76 61 2F 6C 61 6E 67 2F 4F 62 6A 65 63 74 参数2，常量值，代表字符串“java/lang/Object”
 00 21 00 03 00 04 00 00 00 01 00 02 00 05 00 06 00 00 00 02 00 01 00 07 00 08 00 01 00 09 00 00 00 1D 00 01 00 01 00 00 00 05 2A B7 00 01 B1 00 00 00 01 00 0A 00 00 00 06 00 01 00 00 00 07 00 01 00 0B 00 0C 00 01 00 09 00 00 00 1F 00 02 00 01 00 00 00 07 2A B4 00 02 04 60 AC 00 00 00 01 00 0A 00 00 00 06 00 01 00 00 00 0C 00 01 00 0D 00 00 00 02 00 0E
-
-
-
-
+```
