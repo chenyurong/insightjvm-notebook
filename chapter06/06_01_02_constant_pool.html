@@ -1,0 +1,1516 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>常量池 | InsightJVM Notebook</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.1.0">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../gitbook/style.css">
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../chapter06/06_01_03_access_flag.html" />
+    
+    
+    <link rel="prev" href="../chapter06/06_01_01_magic_num_and_version.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="6.1.2" data-basepath=".." data-revision="Tue Jun 07 2016 22:58:44 GMT+0800 (CST)">
+    
+
+<div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="输入并搜索" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+        
+        
+        
+
+        
+
+        
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../index.html">
+                        <i class="fa fa-check"></i>
+                        
+                        《深入理解Java虚拟机》概述
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="chapter01/00_01_java_tech_sys.html">
+            
+                
+                    <a href="../chapter01/00_01_java_tech_sys.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Java技术体系
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1" data-path="chapter01/00_02_java_history.html">
+            
+                
+                    <a href="../chapter01/00_02_java_history.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.1.</b>
+                        
+                        Java发展史
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="chapter01/00_03_jvm_history.html">
+            
+                
+                    <a href="../chapter01/00_03_jvm_history.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.2.</b>
+                        
+                        Java虚拟机发展史
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="chapter01/00_04_java_future.html">
+            
+                
+                    <a href="../chapter01/00_04_java_future.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.3.</b>
+                        
+                        Java技术的趋势
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="chapter01/00_05_compile_ur_own_jdk.html">
+            
+                
+                    <a href="../chapter01/00_05_compile_ur_own_jdk.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.4.</b>
+                        
+                        编译自己的JDK
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="chapter02/01_01_runtime_data_area.html">
+            
+                
+                    <a href="../chapter02/01_01_runtime_data_area.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Java运行时数据区域
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1" data-path="chapter02/01_02_create_object_in_hotspot.html">
+            
+                
+                    <a href="../chapter02/01_02_create_object_in_hotspot.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.</b>
+                        
+                        HotSpot虚拟机对象
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="chapter02/01_03_out_of_memory_error.html">
+            
+                
+                    <a href="../chapter02/01_03_out_of_memory_error.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.</b>
+                        
+                        OutOfMemoryError异常
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="chapter03/03_01_reference_type.html">
+            
+                
+                    <a href="../chapter03/03_01_reference_type.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Java中的引用类型
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="chapter03/03_02_gc.html">
+            
+                
+                    <a href="../chapter03/03_02_gc.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        垃圾回收
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="chapter03/03_03_gc_collector.html">
+            
+                
+                    <a href="../chapter03/03_03_gc_collector.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        垃圾回收器
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="chapter03/03_04_gc_log.html">
+            
+                
+                    <a href="../chapter03/03_04_gc_log.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        理解GC日志
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="chapter03/03_05_gc_allocate_and_recycle_strategy.html">
+            
+                
+                    <a href="../chapter03/03_05_gc_allocate_and_recycle_strategy.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.4.</b>
+                        
+                        内存分配策略
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="chapter04/04_00_monitor_tool.html">
+            
+                
+                    <a href="../chapter04/04_00_monitor_tool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        虚拟机性能监控与故障处理工具
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1" data-path="chapter04/04_01_jdk_commander_tool.html">
+            
+                
+                    <a href="../chapter04/04_01_jdk_commander_tool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.1.</b>
+                        
+                        JDK命令行工具
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="chapter04/04_02_visualize_tool.html">
+            
+                
+                    <a href="../chapter04/04_02_visualize_tool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.</b>
+                        
+                        JDK的可视化工具
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="chapter05/05_00_optimize_demo.html">
+            
+                
+                    <a href="../chapter05/05_00_optimize_demo.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        调优案例分析与实战
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1" data-path="chapter05/05_01_high_performance_app_strategy.html">
+            
+                
+                    <a href="../chapter05/05_01_high_performance_app_strategy.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.1.</b>
+                        
+                        高性能硬件上的程序部署策略
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="chapter05/05_02_cluster_oom.html">
+            
+                
+                    <a href="../chapter05/05_02_cluster_oom.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.2.</b>
+                        
+                        集群间同步导致的内存溢出
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="chapter05/05_03_direct_memory_oom.html">
+            
+                
+                    <a href="../chapter05/05_03_direct_memory_oom.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.3.</b>
+                        
+                        堆外内存导致的溢出错误
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="chapter05/05_04_outside_command_slow.html">
+            
+                
+                    <a href="../chapter05/05_04_outside_command_slow.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.4.</b>
+                        
+                        外部命令导致系统缓慢
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.5" data-path="chapter05/05_05_server_jvm_down.html">
+            
+                
+                    <a href="../chapter05/05_05_server_jvm_down.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.5.</b>
+                        
+                        服务器JVM进程崩溃
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.6" data-path="chapter05/05_06_incorrect_data_structure.html">
+            
+                
+                    <a href="../chapter05/05_06_incorrect_data_structure.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.6.</b>
+                        
+                        不恰当数据结构导致内存占用过大
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.7" data-path="chapter05/05_07_virture_memory_slow.html">
+            
+                
+                    <a href="../chapter05/05_07_virture_memory_slow.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.7.</b>
+                        
+                        Windows虚拟内存导致的长时间停顿
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="6" data-path="chapter06/06_00_jvm_subsystem.html">
+            
+                
+                    <a href="../chapter06/06_00_jvm_subsystem.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                        虚拟机执行子系统
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="6.1" data-path="chapter06/06_01_00_class_file_structure.html">
+            
+                
+                    <a href="../chapter06/06_01_00_class_file_structure.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.</b>
+                        
+                        类文件结构
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="6.1.1" data-path="chapter06/06_01_01_magic_num_and_version.html">
+            
+                
+                    <a href="../chapter06/06_01_01_magic_num_and_version.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.1.</b>
+                        
+                        魔数与Class文件的版本
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="6.1.2" data-path="chapter06/06_01_02_constant_pool.html">
+            
+                
+                    <a href="../chapter06/06_01_02_constant_pool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.2.</b>
+                        
+                        常量池
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.3" data-path="chapter06/06_01_03_access_flag.html">
+            
+                
+                    <a href="../chapter06/06_01_03_access_flag.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.3.</b>
+                        
+                        访问标志
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.4" data-path="chapter06/06_01_04_class_parent_interface.html">
+            
+                
+                    <a href="../chapter06/06_01_04_class_parent_interface.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.4.</b>
+                        
+                        类索引、父类索引、接口索引集合
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.5" data-path="chapter06/06_01_05_field_info.html">
+            
+                
+                    <a href="../chapter06/06_01_05_field_info.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.5.</b>
+                        
+                        字段表集合
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.6" data-path="chapter06/06_01_06_method_info.html">
+            
+                
+                    <a href="../chapter06/06_01_06_method_info.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.6.</b>
+                        
+                        方法表集合
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.7" data-path="chapter06/06_01_07_attr_info.html">
+            
+                
+                    <a href="../chapter06/06_01_07_attr_info.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.7.</b>
+                        
+                        属性表集合
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="chapter06/06_02_00_byte_code_order.html">
+            
+                
+                    <a href="../chapter06/06_02_00_byte_code_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.</b>
+                        
+                        字节码指令简介
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="6.2.1" data-path="chapter06/06_02_01_load_store_order.html">
+            
+                
+                    <a href="../chapter06/06_02_01_load_store_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.1.</b>
+                        
+                        加载和存储指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.2" data-path="chapter06/06_02_02_calc_order.html">
+            
+                
+                    <a href="../chapter06/06_02_02_calc_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.2.</b>
+                        
+                        运算指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.3" data-path="chapter06/06_02_03_type_transfer_order.html">
+            
+                
+                    <a href="../chapter06/06_02_03_type_transfer_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.3.</b>
+                        
+                        类型转换指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.4" data-path="chapter06/06_02_04_create_obj_and_access_order.html">
+            
+                
+                    <a href="../chapter06/06_02_04_create_obj_and_access_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.4.</b>
+                        
+                        对象创建于访问指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.5" data-path="chapter06/06_02_05_opcode_mng_order.html">
+            
+                
+                    <a href="../chapter06/06_02_05_opcode_mng_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.5.</b>
+                        
+                        操作数栈管理指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.6" data-path="chapter06/06_02_06_control_transfer_order.html">
+            
+                
+                    <a href="../chapter06/06_02_06_control_transfer_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.6.</b>
+                        
+                        控制转移指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.7" data-path="chapter06/06_02_07_method_call_and_return_order.html">
+            
+                
+                    <a href="../chapter06/06_02_07_method_call_and_return_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.7.</b>
+                        
+                        方法调用和返回指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.8" data-path="chapter06/06_02_08_exp_handle_order.html">
+            
+                
+                    <a href="../chapter06/06_02_08_exp_handle_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.8.</b>
+                        
+                        异常处理指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.9" data-path="chapter06/06_02_09_synchronized_order.html">
+            
+                
+                    <a href="../chapter06/06_02_09_synchronized_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.9.</b>
+                        
+                        同步指令
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="7" data-path="chapter07/07_00_jvm_class_load_mechanism.html">
+            
+                
+                    <a href="../chapter07/07_00_jvm_class_load_mechanism.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                        虚拟机类加载机制
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="7.1" data-path="chapter07/07_01_load_class_time.html">
+            
+                
+                    <a href="../chapter07/07_01_load_class_time.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        类加载时机
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="chapter07/07_02_class_load_process.html">
+            
+                
+                    <a href="../chapter07/07_02_class_load_process.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.2.</b>
+                        
+                        类加载过程
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="chapter07/07_03_class_loader.html">
+            
+                
+                    <a href="../chapter07/07_03_class_loader.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.3.</b>
+                        
+                        类加载器
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="8" data-path="chapter08/08_00_jvm_class_execute_engine.html">
+            
+                
+                    <a href="../chapter08/08_00_jvm_class_execute_engine.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.</b>
+                        
+                        虚拟机字节码执行引擎
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="8.1" data-path="chapter08/08_01_method_invoke.html">
+            
+                
+                    <a href="../chapter08/08_01_method_invoke.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.1.</b>
+                        
+                        方法调用
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="8.2" data-path="chapter08/08_02_class_explain_exec_engine_base_on_stack.html">
+            
+                
+                    <a href="../chapter08/08_02_class_explain_exec_engine_base_on_stack.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.2.</b>
+                        
+                        基于栈的字节码解释执行引擎
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="9" data-path="chapter09/09_01_tomcat_class_loader.html">
+            
+                
+                    <a href="../chapter09/09_01_tomcat_class_loader.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.</b>
+                        
+                        常见的类加载构造器
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="9.1" data-path="chapter09/09_02_write_small_app.html">
+            
+                
+                    <a href="../chapter09/09_02_write_small_app.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.1.</b>
+                        
+                        实战：动手实现远程执行功能
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="10" data-path="chapter10/10_01_pre_compiler_optimize.html">
+            
+                
+                    <a href="../chapter10/10_01_pre_compiler_optimize.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.</b>
+                        
+                        早期（编译期）优化
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="10.1" data-path="chapter10/10_02_annotaion_implement.html">
+            
+                
+                    <a href="../chapter10/10_02_annotaion_implement.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.1.</b>
+                        
+                        实战：插入式注解处理器
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="11" data-path="chapter11/11_01_late_runtime_optimize.html">
+            
+                
+                    <a href="../chapter11/11_01_late_runtime_optimize.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>11.</b>
+                        
+                        晚期（运行期）优化
+                    </a>
+                
+            
+            
+        </li>
+    
+
+
+        
+        <li class="divider"></li>
+        <li>
+            <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                本书使用 GitBook 发布
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="目录"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search" aria-label="搜索"><i class="fa fa-search"></i></a>
+    
+    <div id="font-settings-wrapper" class="dropdown pull-left">
+        <a href="#" class="btn toggle-dropdown" aria-label="字体设置"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+    </div>
+
+    <div class="buttons font-family-list">
+        <button type="button" data-font="0" class="button">衬线体</button>
+        <button type="button" data-font="1" class="button">无衬线体</button>
+    </div>
+
+    <div class="buttons color-theme-list">
+        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">白色</button>
+        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">棕褐色</button>
+        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">夜间</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Actions Right -->
+    
+    <div class="dropdown pull-right">
+        <a href="#" class="btn toggle-dropdown" aria-label="分享"><i class="fa fa-share-alt"></i>
+        </a>
+        <div class="dropdown-menu font-settings dropdown-left">
+            <div class="dropdown-caret">
+                <span class="caret-outer"></span>
+                <span class="caret-inner"></span>
+            </div>
+            <div class="buttons">
+                <button type="button" data-sharing="twitter" class="button">
+                    分享到 Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    分享到 Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    分享到 Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    分享到 Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    分享到 Instapaper
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Google"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+    
+    
+    
+
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../" >InsightJVM Notebook</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc" target="_blank">DocToc</a></em></p>
+<ul>
+<li><a href="#%E5%B8%B8%E9%87%8F%E6%B1%A0">&#x5E38;&#x91CF;&#x6C60;</a><ul>
+<li><a href="#%E5%AD%97%E9%9D%A2%E9%87%8F">&#x5B57;&#x9762;&#x91CF;</a></li>
+<li><a href="#%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8">&#x7B26;&#x53F7;&#x5F15;&#x7528;</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<h1 id="%E5%B8%B8%E9%87%8F%E6%B1%A0">&#x5E38;&#x91CF;&#x6C60;</h1>
+<p>&#x7D27;&#x63A5;&#x7740;&#x4E3B;&#x6B21;&#x7248;&#x672C;&#x53F7;&#x4E4B;&#x540E;&#x662F;&#x5E38;&#x91CF;&#x6C60;&#x5165;&#x53E3;&#xFF0C;&#x5E38;&#x91CF;&#x6C60;&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A; Class &#x6587;&#x4EF6;&#x4E4B;&#x4E2D;&#x7684;&#x8D44;&#x6E90;&#x4ED3;&#x5E93;&#xFF0C;&#x5B83;&#x662F; Class &#x6587;&#x4EF6;&#x7ED3;&#x6784;&#x4E2D;&#x4E0E;&#x5176;&#x4ED6;&#x9879;&#x76EE;&#x5173;&#x8054;&#x6700;&#x591A;&#x7684;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x3002;&#x7531;&#x4E8E;&#x5E38;&#x91CF;&#x6C60;&#x6570;&#x91CF;&#x4E0D;&#x662F;&#x56FA;&#x5B9A;&#x7684;&#xFF0C;&#x6240;&#x4EE5;&#x5728;&#x5E38;&#x91CF;&#x6C60;&#x7684;&#x5165;&#x53E3;&#x9700;&#x8981;&#x653E;&#x7F6E;&#x4E00;&#x4E2A; u2 &#x7C7B;&#x578B;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x4EE3;&#x8868;&#x5E38;&#x91CF;&#x6C60;&#x5BB9;&#x91CF;&#x8BA1;&#x6570;&#x503C;&#xFF0C;&#x5E76;&#x4E14;&#x8FD9;&#x4E2A;&#x8BA1;&#x6570;&#x5668;&#x662F;&#x4ECE; 1 &#x800C;&#x4E0D;&#x662F; 0 &#x5F00;&#x59CB;&#x7684;&#x3002;&#x5728;&#x5E38;&#x91CF;&#x6C60;&#x5BB9;&#x91CF;&#x8BA1;&#x6570;&#x503C;&#x540E;&#x624D;&#x662F;&#x5BF9;&#x5E94;&#x7684;&#x5E38;&#x91CF;&#x503C;&#x3002;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x7C7B;&#x578B;</th>
+<th style="text-align:center">&#x540D;&#x79F0;</th>
+<th style="text-align:center">&#x89E3;&#x91CA;</th>
+<th style="text-align:center">&#x6570;&#x91CF;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">u2</td>
+<td style="text-align:center">constant_pool_count</td>
+<td style="text-align:center">&#x5E38;&#x91CF;&#x6C60;&#x5E38;&#x91CF;&#x4E2A;&#x6570;</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">cp_info</td>
+<td style="text-align:center">constant_pool</td>
+<td style="text-align:center">&#x5E38;&#x91CF;&#x6C60;</td>
+<td style="text-align:center">constant_pool_count - 1</td>
+</tr>
+</tbody>
+</table>
+<p>&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#xFF0C;&#x5E38;&#x91CF;&#x6C60;&#x5BB9;&#x91CF;&#x4E3A;&#x5341;&#x516D;&#x8FDB;&#x5236;&#x6570;<code>0x0013</code>&#xFF0C;&#x5373;&#x5341;&#x8FDB;&#x5236;&#x6570;&#x7684;19&#xFF0C;&#x8FD9;&#x5C31;&#x4EE3;&#x8868;&#x5E38;&#x91CF;&#x6C60;&#x4E2D;&#x6709;18&#x9879;&#x5E38;&#x91CF;&#xFF0C;&#x7D22;&#x5F15;&#x503C;&#x8303;&#x56F4;&#x4E3A;1-18&#x3002;&#x5728;&#x8BBE;&#x8BA1;&#x4E4B;&#x4E2D;&#x5C06;0&#x9879;&#x5E38;&#x91CF;&#x7A7A;&#x51FA;&#x6765;&#xFF0C;&#x662F;&#x6709;&#x7279;&#x6B8A;&#x8003;&#x8651;&#x7684;&#xFF0C;&#x5B83;&#x7528;&#x6765;&#x8868;&#x793A;&#x201C;&#x4E0D;&#x5F15;&#x7528;&#x4EFB;&#x4F55;&#x4E00;&#x4E2A;&#x5E38;&#x91CF;&#x6C60;&#x9879;&#x76EE;&#x201D;&#x3002;</p>
+<p>&#x5728;&#x5E38;&#x91CF;&#x6C60;&#x4E2D;&#x4E3B;&#x8981;&#x5B58;&#x653E;&#x4E24;&#x5927;&#x7C7B;&#x5E38;&#x91CF;&#xFF1A;&#x5B57;&#x9762;&#x91CF;&#x548C;&#x7B26;&#x53F7;&#x5F15;&#x7528;&#x3002;</p>
+<h2 id="%E5%AD%97%E9%9D%A2%E9%87%8F">&#x5B57;&#x9762;&#x91CF;</h2>
+<p>&#x5B57;&#x9762;&#x91CF;&#x6BD4;&#x8F83;&#x63A5;&#x8FD1;&#x4E8E;Java&#x8BED;&#x8A00;&#x5C42;&#x9762;&#x7684;&#x5E38;&#x91CF;&#x6982;&#x5FF5;&#xFF0C;&#x5982;&#x6587;&#x672C;&#x5B57;&#x7B26;&#x4E32;&#x3001;&#x58F0;&#x660E;&#x4E3A;fina&#x7684;&#x5E38;&#x91CF;&#x6C60;&#x7B49;&#x3002;</p>
+<h2 id="%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8">&#x7B26;&#x53F7;&#x5F15;&#x7528;</h2>
+<p>&#x800C;&#x7B26;&#x53F7;&#x5F15;&#x7528;&#x5219;&#x5C5E;&#x4E8E;&#x7F16;&#x8BD1;&#x539F;&#x7406;&#x65B9;&#x9762;&#x7684;&#x6982;&#x5FF5;&#xFF0C;&#x5305;&#x62EC;&#x4E86;&#x4E0B;&#x9762;&#x4E09;&#x7C7B;&#x5E38;&#x91CF;&#xFF1A;</p>
+<ul>
+<li>&#x7C7B;&#x548C;&#x63A5;&#x53E3;&#x7684;&#x5168;&#x9650;&#x5B9A;&#x540D;</li>
+<li>&#x5B57;&#x6BB5;&#x7684;&#x540D;&#x79F0;&#x548C;&#x63CF;&#x8FF0;&#x7B26;</li>
+<li>&#x65B9;&#x6CD5;&#x7684;&#x540D;&#x79F0;&#x548C;&#x63CF;&#x8FF0;&#x7B26;</li>
+</ul>
+<p>&#x5176;&#x4E2D;&#x5168;&#x9650;&#x5B9A;&#x540D;&#x6307;&#x7684;&#x662F;&#x5305;&#x62EC;&#x4E86;&#x5305;&#x8DEF;&#x5F84;&#x7684;&#x7C7B;&#x540D;&#x3002;</p>
+<p>&#x65E0;&#x8BBA;&#x662F;&#x5B57;&#x9762;&#x91CF;&#x6216;&#x7B26;&#x53F7;&#x7C7B;&#x578B;&#x7684;&#x5E38;&#x91CF;&#xFF0C;&#x5B83;&#x4EEC;&#x672C;&#x8D28;&#x4E0A;&#x90FD;&#x662F;&#x4E00;&#x4E2A;&#x8868;&#x3002;&#x8FD9;&#x4E9B;&#x8868;&#x90FD;&#x6709;&#x4E00;&#x4E9B;&#x5171;&#x540C;&#x7684;&#x7279;&#x70B9;&#xFF0C;&#x5C31;&#x662F;&#x8868;&#x5F00;&#x59CB;&#x7684;&#x7B2C;&#x4E00;&#x4F4D;&#x662F;&#x4E00;&#x4E2A; u1 &#x7C7B;&#x578B;&#x7684;&#x6807;&#x5FD7;&#x4F4D;&#xFF08;&#x5373;&#x4E0B;&#x8868;&#x7684;&#x6807;&#x5FD7;&#x5217;&#xFF09;&#xFF0C;&#x4EE3;&#x8868;&#x5F53;&#x524D;&#x5E38;&#x91CF;&#x5C5E;&#x4E8E;&#x54EA;&#x79CD;&#x5E38;&#x91CF;&#x7C7B;&#x578B;&#x3002;&#x4E4B;&#x540E;&#x643A;&#x5E26;&#x8FD9;&#x79CD;&#x5E38;&#x91CF;&#x7C7B;&#x578B;&#x5BF9;&#x5E94;&#x6570;&#x636E;&#x7ED3;&#x6784;&#x7684;&#x6570;&#x636E;&#x3002;&#x5728;JDK1.7&#x4E2D;&#x5171;&#x6709;14&#x4E2D;&#x5E38;&#x91CF;&#x7C7B;&#x578B;&#xFF0C;&#x89C1;&#x4E0B;&#x8868;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x7C7B;&#x578B;</th>
+<th style="text-align:center">&#x6807;&#x5FD7;</th>
+<th style="text-align:center">&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">CONSTANT_Utf_info</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">UTF-8&#x7F16;&#x7801;&#x7684;&#x5B57;&#x7B26;&#x4E32;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_Integer_info</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">&#x6574;&#x578B;&#x5B57;&#x9762;&#x91CF;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_Float_info</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">&#x6D6E;&#x70B9;&#x578B;&#x5B57;&#x9762;&#x91CF;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_Long_info</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">&#x957F;&#x6574;&#x578B;&#x5B57;&#x9762;&#x91CF;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_Double_info</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">&#x53CC;&#x7CBE;&#x5EA6;&#x6D6E;&#x70B9;&#x578B;&#x5B57;&#x9762;&#x91CF;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_Class_info</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">&#x7D2F;&#x6D3B;&#x63A5;&#x53E3;&#x7684;&#x7B26;&#x53F7;&#x5F15;&#x7528;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_String_info</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">&#x5B57;&#x7B26;&#x4E32;&#x7C7B;&#x578B;&#x5B57;&#x9762;&#x91CF;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_Fieldref_info</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">&#x5B57;&#x6BB5;&#x7684;&#x7B26;&#x53F7;&#x5F15;&#x7528;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_Methodref_info</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">&#x7C7B;&#x4E2D;&#x65B9;&#x6CD5;&#x7684;&#x7B26;&#x53F7;&#x5F15;&#x7528;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_InterfaceMethodref_info</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">&#x63A5;&#x53E3;&#x4E2D;&#x65B9;&#x6CD5;&#x7684;&#x7B26;&#x53F7;&#x5F15;&#x7528;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_NameAndType_info</td>
+<td style="text-align:center">12</td>
+<td style="text-align:center">&#x5B57;&#x6BB5;&#x6216;&#x65B9;&#x6CD5;&#x7684;&#x90E8;&#x5206;&#x7B26;&#x53F7;&#x5F15;&#x7528;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_MethodHandle_info</td>
+<td style="text-align:center">15</td>
+<td style="text-align:center">&#x8868;&#x793A;&#x65B9;&#x6CD5;&#x53E5;&#x67C4;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_MethodType_info</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">&#x6807;&#x8BC6;&#x65B9;&#x6CD5;&#x7C7B;&#x578B;</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSTANT_InvokeDynamic_info</td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">&#x8868;&#x793A;&#x4E00;&#x4E2A;&#x52A8;&#x6001;&#x65B9;&#x6CD5;&#x8C03;&#x7528;&#x70B9;</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="lang-bash">CA FE BA BE <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">33</span> <span class="hljs-number">00</span> <span class="hljs-number">13</span> <span class="hljs-number">0</span>A <span class="hljs-number">00</span> <span class="hljs-number">04</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>F <span class="hljs-number">09</span> <span class="hljs-number">00</span> <span class="hljs-number">03</span> <span class="hljs-number">00</span> <span class="hljs-number">10</span> <span class="hljs-number">07</span> <span class="hljs-number">00</span> <span class="hljs-number">11</span> <span class="hljs-number">07</span> <span class="hljs-number">00</span> <span class="hljs-number">12</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">6</span>D <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">49</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">06</span> <span class="hljs-number">3</span>C <span class="hljs-number">69</span> <span class="hljs-number">6</span>E <span class="hljs-number">69</span> <span class="hljs-number">74</span> <span class="hljs-number">3</span>E <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">03</span> <span class="hljs-number">28</span> <span class="hljs-number">29</span> <span class="hljs-number">56</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">04</span> <span class="hljs-number">43</span> <span class="hljs-number">6</span>F <span class="hljs-number">64</span> <span class="hljs-number">65</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>F <span class="hljs-number">4</span>C <span class="hljs-number">69</span> <span class="hljs-number">6</span>E <span class="hljs-number">65</span> <span class="hljs-number">4</span>E <span class="hljs-number">75</span> <span class="hljs-number">6</span>D <span class="hljs-number">62</span> <span class="hljs-number">65</span> <span class="hljs-number">72</span> <span class="hljs-number">54</span> <span class="hljs-number">61</span> <span class="hljs-number">62</span> <span class="hljs-number">6</span>C <span class="hljs-number">65</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">03</span> <span class="hljs-number">69</span> <span class="hljs-number">6</span>E <span class="hljs-number">63</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">03</span> <span class="hljs-number">28</span> <span class="hljs-number">29</span> <span class="hljs-number">49</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>A <span class="hljs-number">53</span> <span class="hljs-number">6</span>F <span class="hljs-number">75</span> <span class="hljs-number">72</span> <span class="hljs-number">63</span> <span class="hljs-number">65</span> <span class="hljs-number">46</span> <span class="hljs-number">69</span> <span class="hljs-number">6</span>C <span class="hljs-number">65</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>E <span class="hljs-number">43</span> <span class="hljs-number">6</span>C <span class="hljs-number">61</span> <span class="hljs-number">73</span> <span class="hljs-number">73</span> <span class="hljs-number">44</span> <span class="hljs-number">65</span> <span class="hljs-number">6</span>D <span class="hljs-number">6</span>F <span class="hljs-number">2</span>E <span class="hljs-number">6</span>A <span class="hljs-number">61</span> <span class="hljs-number">76</span> <span class="hljs-number">61</span> <span class="hljs-number">0</span>C <span class="hljs-number">00</span> <span class="hljs-number">07</span> <span class="hljs-number">00</span> <span class="hljs-number">08</span> <span class="hljs-number">0</span>C <span class="hljs-number">00</span> <span class="hljs-number">05</span> <span class="hljs-number">00</span> <span class="hljs-number">06</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">11</span> <span class="hljs-number">63</span> <span class="hljs-number">6</span>F <span class="hljs-number">6</span>D <span class="hljs-number">2</span>F <span class="hljs-number">6</span>A <span class="hljs-number">76</span> <span class="hljs-number">6</span>D <span class="hljs-number">2</span>F <span class="hljs-number">43</span> <span class="hljs-number">6</span>C <span class="hljs-number">61</span> <span class="hljs-number">73</span> <span class="hljs-number">73</span> <span class="hljs-number">44</span> <span class="hljs-number">65</span> <span class="hljs-number">6</span>D <span class="hljs-number">6</span>F <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">10</span> <span class="hljs-number">6</span>A <span class="hljs-number">61</span> <span class="hljs-number">76</span> <span class="hljs-number">61</span> <span class="hljs-number">2</span>F <span class="hljs-number">6</span>C <span class="hljs-number">61</span> <span class="hljs-number">6</span>E <span class="hljs-number">67</span> <span class="hljs-number">2</span>F <span class="hljs-number">4</span>F <span class="hljs-number">62</span> <span class="hljs-number">6</span>A <span class="hljs-number">65</span> <span class="hljs-number">63</span> <span class="hljs-number">74</span> <span class="hljs-number">00</span> <span class="hljs-number">21</span> <span class="hljs-number">00</span> <span class="hljs-number">03</span> <span class="hljs-number">00</span> <span class="hljs-number">04</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">02</span> <span class="hljs-number">00</span> <span class="hljs-number">05</span> <span class="hljs-number">00</span> <span class="hljs-number">06</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">02</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">07</span> <span class="hljs-number">00</span> <span class="hljs-number">08</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">09</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">1</span>D <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">05</span> <span class="hljs-number">2</span>A B7 <span class="hljs-number">00</span> <span class="hljs-number">01</span> B1 <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>A <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">06</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">07</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>B <span class="hljs-number">00</span> <span class="hljs-number">0</span>C <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">09</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">1</span>F <span class="hljs-number">00</span> <span class="hljs-number">02</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">07</span> <span class="hljs-number">2</span>A B4 <span class="hljs-number">00</span> <span class="hljs-number">02</span> <span class="hljs-number">04</span> <span class="hljs-number">60</span> AC <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>A <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">06</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>C <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>D <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">02</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>E
+</code></pre>
+<p>&#x56DE;&#x5934;&#x6765;&#x770B;&#x4E0B;&#x56FE;&#x4E2D;&#x5E38;&#x91CF;&#x6C60;&#x7684;&#x7B2C;&#x4E00;&#x9879;&#x5E38;&#x91CF;&#xFF0C;&#x5B83;&#x7684;&#x6807;&#x5FD7;&#x4F4D;&#x662F;<code>0x0A</code>&#x5373;&#x5341;&#x8FDB;&#x5236;&#x7684;10&#xFF0C;&#x67E5;&#x4E0A;&#x8868;&#x53EF;&#x5F97;&#x77E5;&#x5176;&#x5C5E;&#x4E8E;<code>CONSTANT_Methodref_info</code>&#x7C7B;&#x578B;&#x7684;&#x5E38;&#x91CF;&#xFF0C;&#x5373;&#x5176;&#x5B9E;&#x4E00;&#x4E2A;&#x7C7B;&#x4E2D;&#x65B9;&#x6CD5;&#x7684;&#x7B26;&#x53F7;&#x5F15;&#x7528;&#x3002;<code>CONSTANT_Methodref_info</code>&#x7684;&#x6570;&#x636E;&#x7ED3;&#x6784;&#x6BD4;&#x8F83;&#x7B80;&#x5355;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x7C7B;&#x578B;</th>
+<th style="text-align:center">&#x540D;&#x79F0;</th>
+<th style="text-align:center">&#x6570;&#x91CF;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">u1</td>
+<td style="text-align:center">tag</td>
+<td style="text-align:center">&#x503C;&#x4E3A;10</td>
+</tr>
+<tr>
+<td style="text-align:center">u2</td>
+<td style="text-align:center">index</td>
+<td style="text-align:center">&#x6307;&#x5411;&#x58F0;&#x660E;&#x65B9;&#x6CD5;&#x7684;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_Class_info&#x7684;&#x7D22;&#x5F15;&#x9879;</td>
+</tr>
+<tr>
+<td style="text-align:center">u2</td>
+<td style="text-align:center">index</td>
+<td style="text-align:center">&#x6307;&#x5411;&#x540D;&#x79F0;&#x53CA;&#x7C7B;&#x578B;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_NameAndType&#x7684;&#x7D22;&#x5F15;&#x9879;</td>
+</tr>
+</tbody>
+</table>
+<p>&#x5176;&#x4E2D;tag&#x662F;&#x6807;&#x5FD7;&#x4F4D;&#xFF0C;&#x4E0A;&#x9762;&#x5DF2;&#x7ECF;&#x8BF4;&#x8FC7;&#x3002;&#x7B2C;&#x4E00;&#x4E2A;index&#xFF0C;&#x5176;&#x503C;&#x4E3A;<code>0x0004</code>&#xFF0C;&#x6307;&#x5411;&#x58F0;&#x660E;&#x65B9;&#x6CD5;&#x7684;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_Class_info&#x7684;&#x7D22;&#x5F15;&#x9879;&#xFF0C;&#x5176;&#x6307;&#x5411;&#x4E86;&#x5E38;&#x91CF;&#x6C60;&#x4E2D;&#x7684;&#x7B2C;4&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;&#x901A;&#x8FC7;&#x540E;&#x6587;<code>javap</code>&#x8BA1;&#x7B97;&#x51FA;&#x6765;&#x7684;&#x5E38;&#x91CF;&#x6C60;&#x4FE1;&#x606F;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x77E5;&#x9053;&#x5176;&#x6307;&#x5411;<code>java/lang/Object</code>&#x3002;&#x7B2C;&#x4E8C;&#x4E2A;index&#xFF0C;&#x5176;&#x503C;&#x4E3A;<code>0x000F</code>&#xFF0C;&#x6307;&#x5411;&#x540D;&#x79F0;&#x53CA;&#x7C7B;&#x578B;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_NameAndType&#x7684;&#x7D22;&#x5F15;&#x9879;&#xFF0C;&#x5176;&#x6307;&#x5411;&#x4E86;&#x7B2C;15&#x4E2A;&#x5E38;&#x91CF;&#x6C60;&#xFF0C;&#x901A;&#x8FC7;&#x540E;&#x6587;<code>javap</code>&#x8BA1;&#x7B97;&#x51FA;&#x6765;&#x7684;&#x5E38;&#x91CF;&#x6C60;&#x4FE1;&#x606F;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5F97;&#x77E5;&#x5176;&#x6307;&#x5411;&#x4E86;<code>&quot;&lt;init&gt;&quot;:()V</code>&#xFF0C;&#x4E5F;&#x5373;&#x662F;&#x4E00;&#x4E2A;&#x65E0;&#x8FD4;&#x56DE;&#x503C;&#x7684;&#x521D;&#x59CB;&#x5316;&#x65B9;&#x6CD5;&#xFF0C;&#x4E5F;&#x5373;<code>void TestClass()</code>&#x3002;</p>
+<p>&#x6211;&#x4EEC;&#x7EE7;&#x7EED;&#x5206;&#x6790;&#x7B2C;&#x4E8C;&#x9879;&#x5E38;&#x91CF;&#xFF0C;&#x5176;&#x6807;&#x5FD7;&#x4F4D;&#x4E3A;<code>0x09</code>&#xFF0C;&#x5373;&#x5341;&#x8FDB;&#x5236;&#x7684;9&#xFF0C;&#x5373;<code>CONSTANT_Fieldref_info</code>&#x7C7B;&#x578B;&#x7684;&#x5E38;&#x91CF;&#xFF0C;&#x5B83;&#x8868;&#x793A;&#x5B57;&#x6BB5;&#x7684;&#x7B26;&#x53F7;&#x5F15;&#x7528;&#x3002;&#x8FD9;&#x79CD;&#x7C7B;&#x578B;&#x7684;&#x7B26;&#x53F7;&#x5F15;&#x7528;&#x7684;&#x6570;&#x636E;&#x7ED3;&#x6784;&#x5982;&#x4E0B;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x7C7B;&#x578B;</th>
+<th style="text-align:center">&#x540D;&#x79F0;</th>
+<th style="text-align:center">&#x6570;&#x91CF;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">u1</td>
+<td style="text-align:center">tag</td>
+<td style="text-align:center">&#x503C;&#x4E3A;9</td>
+</tr>
+<tr>
+<td style="text-align:center">u2</td>
+<td style="text-align:center">index</td>
+<td style="text-align:center">&#x6307;&#x5411;&#x58F0;&#x660E;&#x5B57;&#x6BB5;&#x7684;&#x7C7B;&#x6216;&#x63A5;&#x53E3;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_Class_info&#x7684;&#x7D22;&#x5F15;&#x9879;</td>
+</tr>
+<tr>
+<td style="text-align:center">u2</td>
+<td style="text-align:center">index</td>
+<td style="text-align:center">&#x6307;&#x5411;&#x5B57;&#x6BB5;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_NameAndType&#x7684;&#x7D22;&#x5F15;&#x9879;</td>
+</tr>
+</tbody>
+</table>
+<p>&#x7D27;&#x8DDF;<code>0x09</code>&#x7684;4&#x4E2A;&#x5B57;&#x8282;&#x5206;&#x522B;&#x662F;&#xFF1A;<code>00 03 00 10</code>&#x3002;&#x7B2C;&#x4E00;&#x4E2A;index&#xFF0C;&#x5176;&#x503C;&#x4E3A;<code>0x0003</code>&#xFF0C;&#x8868;&#x793A;&#x5B57;&#x6BB5;&#x7684;&#x7C7B;&#x6216;&#x63A5;&#x53E3;&#x63CF;&#x8FF0;&#x7B26;&#x7D22;&#x5F15;&#x9879;&#xFF0C;&#x6307;&#x5411;&#x4E86;&#x7B2C;&#x4E09;&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;&#x901A;&#x8FC7;&#x540E;&#x6587;<code>javap</code>&#x8BA1;&#x7B97;&#x51FA;&#x6765;&#x7684;&#x5E38;&#x91CF;&#x6C60;&#x4FE1;&#x606F;&#x53EF;&#x77E5;&#x7B2C;&#x4E09;&#x4E2A;&#x5E38;&#x91CF;&#x662F;<code>com/jvm/ClassDemo</code>&#xFF0C;&#x8868;&#x793A;&#x8BE5;&#x5B57;&#x6BB5;&#x662F;&#x7C7B;ClassDemo&#x4E2D;&#x7684;&#x5B57;&#x6BB5;&#x3002;&#x7B2C;&#x4E8C;&#x4E2A;index&#x3001;&#x5176;&#x503C;&#x4E3A;<code>0x0010</code>&#xFF0C;&#x8868;&#x793A;&#x5B57;&#x6BB5;&#x63CF;&#x8FF0;&#x7B26;&#x7D22;&#x5F15;&#x9879;&#xFF0C;&#x6307;&#x5411;&#x4E86;&#x7B2C;16&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;&#x901A;&#x8FC7;&#x540E;&#x6587;<code>javap</code>&#x8BA1;&#x7B97;&#x51FA;&#x6765;&#x7684;&#x5E38;&#x91CF;&#x6C60;&#x4FE1;&#x606F;&#x53EF;&#x77E5;&#x7B2C;16&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;&#x5176;&#x503C;&#x662F;<code>m:I</code>&#xFF0C;&#x8868;&#x793A;&#x5B57;&#x6BB5;&#x540D;&#x79F0;&#x4E3A;m&#xFF0C;&#x5B57;&#x6BB5;&#x7C7B;&#x578B;&#x662F;Integer&#x7C7B;&#x578B;&#x3002;</p>
+<p>&#x5230;&#x8FD9;&#x91CC;&#x4E3A;&#x6B62;&#xFF0C;&#x6211;&#x4EEC;&#x53EA;&#x5206;&#x6790;&#x4E86;18&#x4E2A;&#x5E38;&#x91CF;&#x4E2D;&#x7684;&#x4E24;&#x4E2A;&#xFF0C;&#x5176;&#x4F59;&#x7684;16&#x4E2A;&#x5E38;&#x91CF;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;Oracle&#x516C;&#x53F8;&#x63D0;&#x4F9B;&#x7684;<code>javap</code>&#x5DE5;&#x5177;&#x8BA1;&#x7B97;&#x51FA;&#x6765;&#x3002;&#x4F7F;&#x7528;<code>javap -verbose [java_file_name]</code>&#x5373;&#x53EF;&#x8F93;&#x51FA;&#x5BF9;&#x5E94;Java&#x7C7B;&#x6587;&#x4EF6;&#x7684;&#x5B57;&#x8282;&#x7801;&#x5185;&#x5BB9;&#x3002;</p>
+<pre><code class="lang-bash">$ javap -verbose com/jvm/ClassDemo
+Classfile /Users/yurongchan/workspace_intelJ/ThreadDemo/src/com/jvm/ClassDemo.class
+  Last modified May <span class="hljs-number">18</span>, <span class="hljs-number">2016</span>; size <span class="hljs-number">283</span> bytes
+  MD5 checksum afc6af8a5d0757b73b28f824b10e1bdb
+  Compiled from <span class="hljs-string">&quot;ClassDemo.java&quot;</span>
+public class com.jvm.ClassDemo
+  SourceFile: <span class="hljs-string">&quot;ClassDemo.java&quot;</span>
+  minor version: <span class="hljs-number">0</span>
+  major version: <span class="hljs-number">51</span>
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   <span class="hljs-comment">#1 = Methodref          #4.#15         //  java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span>
+   <span class="hljs-comment">#2 = Fieldref           #3.#16         //  com/jvm/ClassDemo.m:I</span>
+   <span class="hljs-comment">#3 = Class              #17            //  com/jvm/ClassDemo</span>
+   <span class="hljs-comment">#4 = Class              #18            //  java/lang/Object</span>
+   <span class="hljs-comment">#5 = Utf8               m</span>
+   <span class="hljs-comment">#6 = Utf8               I</span>
+   <span class="hljs-comment">#7 = Utf8               &lt;init&gt;</span>
+   <span class="hljs-comment">#8 = Utf8               ()V</span>
+   <span class="hljs-comment">#9 = Utf8               Code</span>
+  <span class="hljs-comment">#10 = Utf8               LineNumberTable</span>
+  <span class="hljs-comment">#11 = Utf8               inc</span>
+  <span class="hljs-comment">#12 = Utf8               ()I</span>
+  <span class="hljs-comment">#13 = Utf8               SourceFile</span>
+  <span class="hljs-comment">#14 = Utf8               ClassDemo.java</span>
+  <span class="hljs-comment">#15 = NameAndType        #7:#8          //  &quot;&lt;init&gt;&quot;:()V</span>
+  <span class="hljs-comment">#16 = NameAndType        #5:#6          //  m:I</span>
+  <span class="hljs-comment">#17 = Utf8               com/jvm/ClassDemo</span>
+  <span class="hljs-comment">#18 = Utf8               java/lang/Object</span>
+{
+  public com.jvm.ClassDemo();
+    flags: ACC_PUBLIC
+    Code:
+&#x2026;&#x2026;&#x7701;&#x7565;&#x5176;&#x4ED6;&#x5185;&#x5BB9;
+</code></pre>
+<p>&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#xFF0C;&#x8BA1;&#x7B97;&#x673A;&#x5DF2;&#x7ECF;&#x81EA;&#x52A8;&#x5E2E;&#x6211;&#x4EEC;&#x751F;&#x6210;&#x4E86;18&#x9879;&#x5E38;&#x91CF;&#x5185;&#x5BB9;&#xFF0C;&#x5E76;&#x4E14;&#x7B2C;1&#x3001;2&#x9879;&#x7684;&#x8BA1;&#x7B97;&#x7ED3;&#x679C;&#x4E0E;&#x624B;&#x5DE5;&#x8BA1;&#x7B97;&#x7684;&#x7ED3;&#x679C;&#x4E00;&#x81F4;&#x3002;</p>
+<p>[&#x8865;&#x5145;&#x5E38;&#x91CF;&#x6C60;14&#x79CD;&#x5E38;&#x91CF;&#x9879;&#x7684;&#x7ED3;&#x6784;&#x603B;&#x8868;]</p>
+<table>
+    <tr align="center">
+        <td>&#x5E38;&#x91CF;</td><td>&#x9879;&#x76EE;</td><td>&#x7C7B;&#x578B;</td><td>&#x63CF;&#x8FF0;</td>
+    </tr>
+    <!-- 1 -->
+    <tr align="center">
+        <td rowspan="3">CONSTANT_Utf8_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;1</td>
+    </tr>
+    <tr align="center">
+        <td>length</td><td>u2</td><td>UTF-8&#x7F16;&#x7801;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x7684;&#x5B57;&#x8282;&#x6570;</td>
+    </tr>
+    <tr align="center">
+        <td>bytes</td><td>u1</td><td>&#x957F;&#x5EA6;&#x4E3A;length&#x7684;UTF-8&#x7F16;&#x7801;&#x7684;&#x5B57;&#x7B26;&#x4E32;</td>
+    </tr>
+    <!-- 2 -->
+    <tr align="center">
+        <td rowspan="2">CONSTANT_Integer_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;3</td>
+    </tr>
+    <tr align="center">
+        <td>bytes</td><td>u4</td><td>&#x6309;&#x7167;&#x9AD8;&#x4F4D;&#x5728;&#x524D;&#x5B58;&#x50A8;&#x7684;int&#x503C;</td>
+    </tr>
+    <!-- 3 -->
+    <tr align="center">
+        <td rowspan="2">CONSTANT_Float_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;4</td>
+    </tr>
+    <tr align="center">
+        <td>bytes</td><td>u4</td><td>&#x6309;&#x7167;&#x9AD8;&#x4F4D;&#x5728;&#x524D;&#x5B58;&#x50A8;&#x7684;float&#x503C;</td>
+    </tr>
+    <!-- 4 -->
+    <tr align="center">
+        <td rowspan="2">CONSTANT_Long_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;5</td>
+    </tr>
+    <tr align="center">
+        <td>bytes</td><td>u8</td><td>&#x6309;&#x7167;&#x9AD8;&#x4F4D;&#x5728;&#x524D;&#x5B58;&#x50A8;&#x7684;long&#x503C;</td>
+    </tr>
+    <!-- 5 -->
+    <tr align="center">
+        <td rowspan="2">CONSTANT_Double_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;6</td>
+    </tr>
+    <tr align="center">
+        <td>bytes</td><td>u8</td><td>&#x6309;&#x7167;&#x9AD8;&#x4F4D;&#x5728;&#x524D;&#x5B58;&#x50A8;&#x7684;double&#x503C;</td>
+    </tr>
+    <!-- 6 -->
+    <tr align="center">
+        <td rowspan="2">CONSTANT_Class_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;7</td>
+    </tr>
+    <tr align="center">
+        <td>index</td><td>u2</td><td>&#x6307;&#x5411;&#x5168;&#x9650;&#x5B9A;&#x540D;&#x5E38;&#x91CF;&#x9879;&#x7684;&#x7D22;&#x5F15;</td>
+    </tr>
+    <!-- 7 -->
+    <tr align="center">
+        <td rowspan="2">CONSTANT_String_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;8</td>
+    </tr>
+    <tr align="center">
+        <td>index</td><td>u2</td><td>&#x6307;&#x5411;&#x5B57;&#x7B26;&#x4E32;&#x5B57;&#x9762;&#x91CF;&#x7684;&#x7D22;&#x5F15;</td>
+    </tr>
+    <!-- 8 -->
+    <tr align="center">
+        <td rowspan="3">CONSTANT_Fieldref_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;9</td>
+    </tr>
+    <tr align="center">
+        <td>index</td><td>u2</td><td>&#x6307;&#x5411;&#x58F0;&#x660E;&#x5B57;&#x6BB5;&#x7684;&#x7C7B;&#x6216;&#x8005;&#x63A5;&#x53E3;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_Class_info&#x7684;&#x7D22;&#x5F15;&#x9879;</td>    
+    </tr>
+    <tr align="center">
+        <td>index</td><td>u2</td><td>&#x6307;&#x5411;&#x5B57;&#x6BB5;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_NameAndType&#x7684;&#x7D22;&#x5F15;&#x9879;</td>
+    </tr>
+    <!-- 9 -->
+    <tr align="center">
+        <td rowspan="3">CONSTANT_Methodref_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;10</td>
+    </tr>
+    <tr align="center">
+        <td>index</td><td>u2</td><td>&#x6307;&#x5411;&#x58F0;&#x660E;&#x65B9;&#x6CD5;&#x7684;&#x7C7B;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_Class_info&#x7684;&#x7D22;&#x5F15;&#x9879;</td>    
+    </tr>
+    <tr align="center">
+        <td>index</td><td>u2</td><td>&#x6307;&#x5411;&#x540D;&#x79F0;&#x53CA;&#x7C7B;&#x578B;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_NameAndType&#x7684;&#x7D22;&#x5F15;&#x9879;</td>
+    </tr>
+    <!-- 10 -->
+    <tr align="center">
+        <td rowspan="3">CONSTANT_InterfaceMethodref_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;11</td>
+    </tr>
+    <tr align="center">
+        <td>index</td><td>u2</td><td>&#x6307;&#x5411;&#x58F0;&#x660E;&#x65B9;&#x6CD5;&#x7684;&#x63A5;&#x53E3;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_Class_info&#x7684;&#x7D22;&#x5F15;&#x9879;</td>    
+    </tr>
+    <tr align="center">
+        <td>index</td><td>u2</td><td>&#x6307;&#x5411;&#x540D;&#x79F0;&#x53CA;&#x7C7B;&#x578B;&#x63CF;&#x8FF0;&#x7B26;CONSTANT_NameAndType&#x7684;&#x7D22;&#x5F15;&#x9879;</td>
+    </tr>
+    <!-- 11 -->
+    <tr align="center">
+        <td rowspan="3">CONSTANT_NameAndType_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;12</td>
+    </tr>
+    <tr align="center">
+        <td>index</td><td>u2</td><td>&#x6307;&#x5411;&#x8BE5;&#x5B57;&#x6BB5;&#x6216;&#x65B9;&#x6CD5;&#x540D;&#x79F0;&#x5E38;&#x91CF;&#x9879;&#x7684;&#x7D22;&#x5F15;</td>    
+    </tr>
+    <tr align="center">
+        <td>index</td><td>u2</td><td>&#x6307;&#x5411;&#x8BE5;&#x5B57;&#x6BB5;&#x6216;&#x65B9;&#x6CD5;&#x63CF;&#x8FF0;&#x7B26;&#x5E38;&#x91CF;&#x9879;&#x7684;&#x7D22;&#x5F15;</td>
+    </tr>
+    <!-- 12 -->
+    <tr align="center">
+        <td rowspan="3">CONSTANT_MethodHandle_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;15</td>
+    </tr>
+    <tr align="center">
+        <td>reference_kind</td><td>u1</td><td>&#x503C;&#x5FC5;&#x987B;&#x5728;1~9&#x4E4B;&#x95F4;&#xFF08;&#x5305;&#x62EC;1&#x548C;9&#xFF09;&#xFF0C;&#x5B83;&#x51B3;&#x5B9A;&#x4E86;&#x65B9;&#x6CD5;&#x53E5;&#x67C4;&#x7684;&#x7C7B;&#x578B;&#x3002;&#x65B9;&#x6CD5;&#x53E5;&#x67C4;&#x7C7B;&#x578B;&#x7684;&#x503C;&#x8868;&#x793A;&#x65B9;&#x6CD5;&#x53E5;&#x67C4;&#x7684;&#x5B57;&#x8282;&#x7801;&#x884C;&#x4E3A;</td>    
+    </tr>
+    <tr align="center">
+        <td>reference_index</td><td>u2</td><td>&#x503C;&#x5FC5;&#x987B;&#x662F;&#x5BF9;&#x5E38;&#x91CF;&#x6C60;&#x7684;&#x6709;&#x6548;&#x7D22;&#x5F15;</td>
+    </tr>
+    <!-- 13 -->
+    <tr align="center">
+        <td rowspan="2">CONSTANT_MethodType_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;16</td>
+    </tr>
+    <tr align="center">
+        <td>descriptor_index</td><td>u2</td><td>&#x503C;&#x5FC5;&#x987B;&#x662F;&#x5BF9;&#x5E38;&#x91CF;&#x6C60;&#x7684;&#x6709;&#x6548;&#x7D22;&#x5F15;&#xFF0C;&#x5E38;&#x91CF;&#x6C60;&#x5728;&#x8BE5;&#x7D22;&#x5F15;&#x5904;&#x7684;&#x9879;&#x5FC5;&#x987B;&#x662F;CONSTANT_Utf8_info&#x7ED3;&#x6784;&#xFF0C;&#x8868;&#x793A;&#x65B9;&#x6CD5;&#x7684;&#x63CF;&#x8FF0;&#x7B26;</td>    
+    </tr>  
+    <!-- 14 -->
+    <tr align="center">
+        <td rowspan="3">CONSTANT_InvokeDynamic_info</td><td>tag</td><td>u1</td><td>&#x503C;&#x4E3A;18</td>
+    </tr>
+    <tr align="center">
+        <td>bootstrap_method_attr_index</td><td>u2</td><td>&#x503C;&#x5FC5;&#x987B;&#x662F;&#x5BF9;&#x5F53;&#x524D;Class&#x6587;&#x4EF6;&#x4E2D;&#x5F15;&#x5BFC;&#x65B9;&#x6CD5;&#x8868;&#x7684;bootstrap_methods[]&#x6570;&#x7EC4;&#x7684;&#x6709;&#x6548;&#x7D22;&#x5F15;</td>    
+    </tr>
+    <tr align="center">
+        <td>name_and_type_index</td><td>u2</td><td>&#x503C;&#x5FC5;&#x987B;&#x662F;&#x5BF9;&#x5F53;&#x524D;&#x5E38;&#x91CF;&#x6C60;&#x7684;&#x6709;&#x6548;&#x7D22;&#x5F15;&#xFF0C;&#x5E38;&#x91CF;&#x6C60;&#x5728;&#x8BE5;&#x7D22;&#x5F15;&#x5904;&#x7684;&#x9879;&#x5FC5;&#x987B;&#x662F;CONSTANT_NameAndType_info&#x7ED3;&#x6784;&#xFF0C;&#x8868;&#x793A;&#x65B9;&#x6CD5;&#x540D;&#x548C;&#x65B9;&#x6CD5;&#x63CF;&#x8FF0;&#x7B26;</td>
+    </tr>
+</table>
+
+<p>&#x6709;&#x5174;&#x8DA3;&#x7684;&#x670B;&#x53CB;&#x53EF;&#x4EE5;&#x5206;&#x6790;&#x4E00;&#x4E0B;&#x5269;&#x4F59;&#x7684;16&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;&#x4E0B;&#x9762;&#x662F;&#x6211;&#x5206;&#x6790;&#x540E;&#x7684;&#x7ED3;&#x679C;&#x3002;</p>
+<pre><code class="lang-bash">CA FE BA BE    &#x9B54;&#x6570;  
+<span class="hljs-number">00</span> <span class="hljs-number">00</span>  &#x6B21;&#x7248;&#x672C;&#x53F7;
+<span class="hljs-number">00</span> <span class="hljs-number">33</span>  &#x4E3B;&#x7248;&#x672C;&#x53F7;&#xFF08;JDK1.<span class="hljs-number">7.0</span>&#xFF09;
+<span class="hljs-number">00</span> <span class="hljs-number">13</span>  &#x5E38;&#x91CF;&#x6C60;<span class="hljs-number">18</span>&#x4E2A;&#x5E38;&#x91CF;
+<span class="hljs-number">0</span>A &#x7B2C;<span class="hljs-number">1</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;<span class="hljs-number">10</span>&#xFF0C;&#x65B9;&#x6CD5;&#x5F15;&#x7528;
+<span class="hljs-number">00</span> <span class="hljs-number">04</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x7C7B;&#x63CF;&#x8FF0;&#x7B26;&#xFF0C;&#x6307;&#x5411;&#x7B2C;<span class="hljs-number">4</span>&#x4E2A;&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">0</span>F &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x540D;&#x79F0;&#x3001;&#x7C7B;&#x578B;&#x63CF;&#x8FF0;&#x7B26;&#xFF0C;&#x6307;&#x5411;&#x7B2C;<span class="hljs-number">10</span>&#x4E2A;&#x5E38;&#x91CF;
+<span class="hljs-number">09</span> &#x7B2C;<span class="hljs-number">2</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;<span class="hljs-number">9</span>&#xFF0C;&#x5B57;&#x6BB5;&#x5F15;&#x7528;
+<span class="hljs-number">00</span> <span class="hljs-number">03</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x7C7B;&#x6216;&#x63A5;&#x53E3;&#x63CF;&#x8FF0;&#x7B26;&#xFF0C;&#x6307;&#x5411;&#x7B2C;<span class="hljs-number">3</span>&#x4E2A;&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">10</span> &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x540D;&#x79F0;&#x3001;&#x7C7B;&#x578B;&#x63CF;&#x8FF0;&#x7B26;&#xFF0C;&#x6307;&#x5411;&#x7B2C;<span class="hljs-number">16</span>&#x4E2A;&#x5E38;&#x91CF;
+<span class="hljs-number">07</span> &#x7B2C;<span class="hljs-number">3</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;<span class="hljs-number">7</span>&#xFF0C;&#x7C7B;&#x4FE1;&#x606F;
+<span class="hljs-number">00</span> <span class="hljs-number">11</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x7C7B;&#x5168;&#x9650;&#x5B9A;&#x540D;&#x5E38;&#x91CF;&#x9879;&#x7D22;&#x5F15;&#x503C;&#xFF0C;&#x6307;&#x5411;&#x7B2C;<span class="hljs-number">17</span>&#x4E2A;&#x5E38;&#x91CF;
+<span class="hljs-number">07</span> &#x7B2C;<span class="hljs-number">4</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;<span class="hljs-number">7</span>&#xFF0C;&#x7C7B;&#x4FE1;&#x606F;
+<span class="hljs-number">00</span> <span class="hljs-number">12</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x7C7B;&#x5168;&#x9650;&#x5B9A;&#x540D;&#x5E38;&#x91CF;&#x9879;&#x7D22;&#x5F15;&#x503C;&#xFF0C;&#x6307;&#x5411;&#x7B2C;<span class="hljs-number">18</span>&#x4E2A;&#x5E38;&#x91CF;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">5</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">01</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">1</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">6</span>D &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;<span class="hljs-number">6</span>D&#x8868;&#x793A;&#x5B57;&#x7B26;&#x4E32;&#x201C;m&#x201D;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">6</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">01</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">1</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">49</span> &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;<span class="hljs-number">49</span>&#x8868;&#x793A;&#x5B57;&#x7B26;&#x4E32;&#x201C;I&#x201D;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">7</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">06</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">6</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">3</span>C <span class="hljs-number">69</span> <span class="hljs-number">6</span>E <span class="hljs-number">69</span> <span class="hljs-number">74</span> <span class="hljs-number">3</span>E &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;&#x4EE3;&#x8868;&#x5B57;&#x7B26;&#x4E32;&#x201C;&lt;init&gt;&#x201D;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">8</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">03</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">3</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">28</span> <span class="hljs-number">29</span> <span class="hljs-number">56</span> &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;&#x4EE3;&#x8868;&#x5B57;&#x7B26;&#x4E32;&#x201C;()V&#x201D;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">9</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">04</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">4</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">43</span> <span class="hljs-number">6</span>F <span class="hljs-number">64</span> <span class="hljs-number">65</span> &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;&#x4EE3;&#x8868;&#x5B57;&#x7B26;&#x4E32;&#x201C;Code&#x201D;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">10</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">0</span>F &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">15</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">4</span>C <span class="hljs-number">69</span> <span class="hljs-number">6</span>E <span class="hljs-number">65</span> <span class="hljs-number">4</span>E <span class="hljs-number">75</span> <span class="hljs-number">6</span>D <span class="hljs-number">62</span> <span class="hljs-number">65</span> <span class="hljs-number">72</span> <span class="hljs-number">54</span> <span class="hljs-number">61</span> <span class="hljs-number">62</span> <span class="hljs-number">6</span>C <span class="hljs-number">65</span> &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;&#x4EE3;&#x8868;&#x5B57;&#x7B26;&#x4E32;&#x201C;LineNumberTable&#x201D;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">11</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">03</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">3</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">69</span> <span class="hljs-number">6</span>E <span class="hljs-number">63</span> &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;&#x4EE3;&#x8868;&#x5B57;&#x7B26;&#x4E32;&#x201C;inc&#x201D;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">12</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">03</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">3</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">28</span> <span class="hljs-number">29</span> <span class="hljs-number">49</span> &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;&#x4EE3;&#x8868;&#x5B57;&#x7B26;&#x4E32;&#x201C;()I&#x201D;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">13</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">0</span>A &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">10</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">53</span> <span class="hljs-number">6</span>F <span class="hljs-number">75</span> <span class="hljs-number">72</span> <span class="hljs-number">63</span> <span class="hljs-number">65</span> <span class="hljs-number">46</span> <span class="hljs-number">69</span> <span class="hljs-number">6</span>C <span class="hljs-number">65</span> &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;&#x4EE3;&#x8868;&#x5B57;&#x7B26;&#x4E32;&#x201C;SourceFile&#x201D;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">14</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">0</span>E &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">16</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">43</span> <span class="hljs-number">6</span>C <span class="hljs-number">61</span> <span class="hljs-number">73</span> <span class="hljs-number">73</span> <span class="hljs-number">44</span> <span class="hljs-number">65</span> <span class="hljs-number">6</span>D <span class="hljs-number">6</span>F <span class="hljs-number">2</span>E <span class="hljs-number">6</span>A <span class="hljs-number">61</span> <span class="hljs-number">76</span> <span class="hljs-number">61</span> <span class="hljs-number">0</span>C <span class="hljs-number">00</span> &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;&#x4EE3;&#x8868;&#x5B57;&#x7B26;&#x4E32;&#x201C;ClassDemo.java&#x201D;
+<span class="hljs-number">07</span> &#x7B2C;<span class="hljs-number">15</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;<span class="hljs-number">7</span>&#xFF0C;&#x7C7B;&#x4FE1;&#x606F;
+<span class="hljs-number">00</span> <span class="hljs-number">08</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x6307;&#x5411;&#x5168;&#x9650;&#x5B9A;&#x540D;&#x5E38;&#x91CF;&#x9879;&#x7684;&#x7D22;&#x5F15;&#xFF0C;&#x6307;&#x5411;&#x5E38;&#x91CF;<span class="hljs-number">8</span>&#xFF0C;&#x5373;&#x201C;()V&#x201D;
+<span class="hljs-number">0</span>C &#x7B2C;<span class="hljs-number">16</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;<span class="hljs-number">12</span>&#xFF0C;&#x540D;&#x5B57;&#x7C7B;&#x578B;&#x4FE1;&#x606F;
+<span class="hljs-number">00</span> <span class="hljs-number">05</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x6307;&#x5411;&#x5B57;&#x6BB5;&#x6216;&#x65B9;&#x6CD5;&#x540D;&#x79F0;&#x5E38;&#x91CF;&#x9879;&#x7D22;&#x5F15;&#xFF0C;&#x6307;&#x5411;&#x5E38;&#x91CF;<span class="hljs-number">5</span>&#xFF0C;&#x5373;&#x201C;m&#x201D;
+<span class="hljs-number">00</span> <span class="hljs-number">06</span> &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x6307;&#x5411;&#x5B57;&#x6BB5;&#x6216;&#x65B9;&#x6CD5;&#x63CF;&#x8FF0;&#x7B26;&#x5E38;&#x91CF;&#x9879;&#x7D22;&#x5F15;&#xFF0C;&#x6307;&#x5411;&#x5E38;&#x91CF;<span class="hljs-number">6</span>&#xFF0C;&#x5373;&#x201C;I&#x201D;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">17</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">11</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">17</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">63</span> <span class="hljs-number">6</span>F <span class="hljs-number">6</span>D <span class="hljs-number">2</span>F <span class="hljs-number">6</span>A <span class="hljs-number">76</span> <span class="hljs-number">6</span>D <span class="hljs-number">2</span>F <span class="hljs-number">43</span> <span class="hljs-number">6</span>C <span class="hljs-number">61</span> <span class="hljs-number">73</span> <span class="hljs-number">73</span> <span class="hljs-number">44</span> <span class="hljs-number">65</span> <span class="hljs-number">6</span>D <span class="hljs-number">6</span>F &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;&#x4EE3;&#x8868;&#x5B57;&#x7B26;&#x4E32;&#x201C;com/jvm/ClassDemo&#x201D;
+<span class="hljs-number">01</span> &#x7B2C;<span class="hljs-number">18</span>&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;UTF-<span class="hljs-number">8</span>&#x5E38;&#x91CF;
+<span class="hljs-number">00</span> <span class="hljs-number">10</span> &#x53C2;&#x6570;<span class="hljs-number">1</span>&#xFF0C;&#x5E38;&#x91CF;&#x5B57;&#x7B26;&#x4E32;&#x5360;&#x7528;&#x5B57;&#x8282;&#x6570;&#xFF0C;&#x8FD9;&#x91CC;&#x5360;&#x7528;&#x4E86;<span class="hljs-number">16</span>&#x4E2A;&#x5B57;&#x8282;
+<span class="hljs-number">6</span>A <span class="hljs-number">61</span> <span class="hljs-number">76</span> <span class="hljs-number">61</span> <span class="hljs-number">2</span>F <span class="hljs-number">6</span>C <span class="hljs-number">61</span> <span class="hljs-number">6</span>E <span class="hljs-number">67</span> <span class="hljs-number">2</span>F <span class="hljs-number">4</span>F <span class="hljs-number">62</span> <span class="hljs-number">6</span>A <span class="hljs-number">65</span> <span class="hljs-number">63</span> <span class="hljs-number">74</span> &#x53C2;&#x6570;<span class="hljs-number">2</span>&#xFF0C;&#x5E38;&#x91CF;&#x503C;&#xFF0C;&#x4EE3;&#x8868;&#x5B57;&#x7B26;&#x4E32;&#x201C;java/lang/Object&#x201D;
+<span class="hljs-number">00</span> <span class="hljs-number">21</span> <span class="hljs-number">00</span> <span class="hljs-number">03</span> <span class="hljs-number">00</span> <span class="hljs-number">04</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">02</span> <span class="hljs-number">00</span> <span class="hljs-number">05</span> <span class="hljs-number">00</span> <span class="hljs-number">06</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">02</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">07</span> <span class="hljs-number">00</span> <span class="hljs-number">08</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">09</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">1</span>D <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">05</span> <span class="hljs-number">2</span>A B7 <span class="hljs-number">00</span> <span class="hljs-number">01</span> B1 <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>A <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">06</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">07</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>B <span class="hljs-number">00</span> <span class="hljs-number">0</span>C <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">09</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">1</span>F <span class="hljs-number">00</span> <span class="hljs-number">02</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">07</span> <span class="hljs-number">2</span>A B4 <span class="hljs-number">00</span> <span class="hljs-number">02</span> <span class="hljs-number">04</span> <span class="hljs-number">60</span> AC <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>A <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">06</span> <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>C <span class="hljs-number">00</span> <span class="hljs-number">01</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>D <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">02</span> <span class="hljs-number">00</span> <span class="hljs-number">0</span>E
+</code></pre>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../chapter06/06_01_01_magic_num_and_version.html" class="navigation navigation-prev " aria-label="Previous page: 魔数与Class文件的版本"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../chapter06/06_01_03_access_flag.html" class="navigation navigation-next " aria-label="Next page: 访问标志"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../gitbook/app.js"></script>
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-livereload/plugin.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

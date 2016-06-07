@@ -1,0 +1,1263 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>理解GC日志 | InsightJVM Notebook</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.1.0">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../gitbook/style.css">
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../chapter03/03_05_gc_allocate_and_recycle_strategy.html" />
+    
+    
+    <link rel="prev" href="../chapter03/03_03_gc_collector.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="3.3" data-basepath=".." data-revision="Tue Jun 07 2016 22:58:44 GMT+0800 (CST)">
+    
+
+<div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="输入并搜索" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+        
+        
+        
+
+        
+
+        
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../index.html">
+                        <i class="fa fa-check"></i>
+                        
+                        《深入理解Java虚拟机》概述
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="chapter01/00_01_java_tech_sys.html">
+            
+                
+                    <a href="../chapter01/00_01_java_tech_sys.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Java技术体系
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1" data-path="chapter01/00_02_java_history.html">
+            
+                
+                    <a href="../chapter01/00_02_java_history.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.1.</b>
+                        
+                        Java发展史
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="chapter01/00_03_jvm_history.html">
+            
+                
+                    <a href="../chapter01/00_03_jvm_history.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.2.</b>
+                        
+                        Java虚拟机发展史
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="chapter01/00_04_java_future.html">
+            
+                
+                    <a href="../chapter01/00_04_java_future.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.3.</b>
+                        
+                        Java技术的趋势
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="chapter01/00_05_compile_ur_own_jdk.html">
+            
+                
+                    <a href="../chapter01/00_05_compile_ur_own_jdk.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.4.</b>
+                        
+                        编译自己的JDK
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="chapter02/01_01_runtime_data_area.html">
+            
+                
+                    <a href="../chapter02/01_01_runtime_data_area.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Java运行时数据区域
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1" data-path="chapter02/01_02_create_object_in_hotspot.html">
+            
+                
+                    <a href="../chapter02/01_02_create_object_in_hotspot.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.</b>
+                        
+                        HotSpot虚拟机对象
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="chapter02/01_03_out_of_memory_error.html">
+            
+                
+                    <a href="../chapter02/01_03_out_of_memory_error.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.</b>
+                        
+                        OutOfMemoryError异常
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="chapter03/03_01_reference_type.html">
+            
+                
+                    <a href="../chapter03/03_01_reference_type.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Java中的引用类型
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="chapter03/03_02_gc.html">
+            
+                
+                    <a href="../chapter03/03_02_gc.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        垃圾回收
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="chapter03/03_03_gc_collector.html">
+            
+                
+                    <a href="../chapter03/03_03_gc_collector.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        垃圾回收器
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="3.3" data-path="chapter03/03_04_gc_log.html">
+            
+                
+                    <a href="../chapter03/03_04_gc_log.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        理解GC日志
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="chapter03/03_05_gc_allocate_and_recycle_strategy.html">
+            
+                
+                    <a href="../chapter03/03_05_gc_allocate_and_recycle_strategy.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.4.</b>
+                        
+                        内存分配策略
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="chapter04/04_00_monitor_tool.html">
+            
+                
+                    <a href="../chapter04/04_00_monitor_tool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        虚拟机性能监控与故障处理工具
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1" data-path="chapter04/04_01_jdk_commander_tool.html">
+            
+                
+                    <a href="../chapter04/04_01_jdk_commander_tool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.1.</b>
+                        
+                        JDK命令行工具
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="chapter04/04_02_visualize_tool.html">
+            
+                
+                    <a href="../chapter04/04_02_visualize_tool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.</b>
+                        
+                        JDK的可视化工具
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="chapter05/05_00_optimize_demo.html">
+            
+                
+                    <a href="../chapter05/05_00_optimize_demo.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        调优案例分析与实战
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1" data-path="chapter05/05_01_high_performance_app_strategy.html">
+            
+                
+                    <a href="../chapter05/05_01_high_performance_app_strategy.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.1.</b>
+                        
+                        高性能硬件上的程序部署策略
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="chapter05/05_02_cluster_oom.html">
+            
+                
+                    <a href="../chapter05/05_02_cluster_oom.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.2.</b>
+                        
+                        集群间同步导致的内存溢出
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="chapter05/05_03_direct_memory_oom.html">
+            
+                
+                    <a href="../chapter05/05_03_direct_memory_oom.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.3.</b>
+                        
+                        堆外内存导致的溢出错误
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="chapter05/05_04_outside_command_slow.html">
+            
+                
+                    <a href="../chapter05/05_04_outside_command_slow.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.4.</b>
+                        
+                        外部命令导致系统缓慢
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.5" data-path="chapter05/05_05_server_jvm_down.html">
+            
+                
+                    <a href="../chapter05/05_05_server_jvm_down.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.5.</b>
+                        
+                        服务器JVM进程崩溃
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.6" data-path="chapter05/05_06_incorrect_data_structure.html">
+            
+                
+                    <a href="../chapter05/05_06_incorrect_data_structure.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.6.</b>
+                        
+                        不恰当数据结构导致内存占用过大
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.7" data-path="chapter05/05_07_virture_memory_slow.html">
+            
+                
+                    <a href="../chapter05/05_07_virture_memory_slow.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.7.</b>
+                        
+                        Windows虚拟内存导致的长时间停顿
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="6" data-path="chapter06/06_00_jvm_subsystem.html">
+            
+                
+                    <a href="../chapter06/06_00_jvm_subsystem.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                        虚拟机执行子系统
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="6.1" data-path="chapter06/06_01_00_class_file_structure.html">
+            
+                
+                    <a href="../chapter06/06_01_00_class_file_structure.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.</b>
+                        
+                        类文件结构
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="6.1.1" data-path="chapter06/06_01_01_magic_num_and_version.html">
+            
+                
+                    <a href="../chapter06/06_01_01_magic_num_and_version.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.1.</b>
+                        
+                        魔数与Class文件的版本
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.2" data-path="chapter06/06_01_02_constant_pool.html">
+            
+                
+                    <a href="../chapter06/06_01_02_constant_pool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.2.</b>
+                        
+                        常量池
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.3" data-path="chapter06/06_01_03_access_flag.html">
+            
+                
+                    <a href="../chapter06/06_01_03_access_flag.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.3.</b>
+                        
+                        访问标志
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.4" data-path="chapter06/06_01_04_class_parent_interface.html">
+            
+                
+                    <a href="../chapter06/06_01_04_class_parent_interface.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.4.</b>
+                        
+                        类索引、父类索引、接口索引集合
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.5" data-path="chapter06/06_01_05_field_info.html">
+            
+                
+                    <a href="../chapter06/06_01_05_field_info.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.5.</b>
+                        
+                        字段表集合
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.6" data-path="chapter06/06_01_06_method_info.html">
+            
+                
+                    <a href="../chapter06/06_01_06_method_info.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.6.</b>
+                        
+                        方法表集合
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.7" data-path="chapter06/06_01_07_attr_info.html">
+            
+                
+                    <a href="../chapter06/06_01_07_attr_info.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.7.</b>
+                        
+                        属性表集合
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="chapter06/06_02_00_byte_code_order.html">
+            
+                
+                    <a href="../chapter06/06_02_00_byte_code_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.</b>
+                        
+                        字节码指令简介
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="6.2.1" data-path="chapter06/06_02_01_load_store_order.html">
+            
+                
+                    <a href="../chapter06/06_02_01_load_store_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.1.</b>
+                        
+                        加载和存储指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.2" data-path="chapter06/06_02_02_calc_order.html">
+            
+                
+                    <a href="../chapter06/06_02_02_calc_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.2.</b>
+                        
+                        运算指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.3" data-path="chapter06/06_02_03_type_transfer_order.html">
+            
+                
+                    <a href="../chapter06/06_02_03_type_transfer_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.3.</b>
+                        
+                        类型转换指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.4" data-path="chapter06/06_02_04_create_obj_and_access_order.html">
+            
+                
+                    <a href="../chapter06/06_02_04_create_obj_and_access_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.4.</b>
+                        
+                        对象创建于访问指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.5" data-path="chapter06/06_02_05_opcode_mng_order.html">
+            
+                
+                    <a href="../chapter06/06_02_05_opcode_mng_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.5.</b>
+                        
+                        操作数栈管理指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.6" data-path="chapter06/06_02_06_control_transfer_order.html">
+            
+                
+                    <a href="../chapter06/06_02_06_control_transfer_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.6.</b>
+                        
+                        控制转移指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.7" data-path="chapter06/06_02_07_method_call_and_return_order.html">
+            
+                
+                    <a href="../chapter06/06_02_07_method_call_and_return_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.7.</b>
+                        
+                        方法调用和返回指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.8" data-path="chapter06/06_02_08_exp_handle_order.html">
+            
+                
+                    <a href="../chapter06/06_02_08_exp_handle_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.8.</b>
+                        
+                        异常处理指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.9" data-path="chapter06/06_02_09_synchronized_order.html">
+            
+                
+                    <a href="../chapter06/06_02_09_synchronized_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.9.</b>
+                        
+                        同步指令
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="7" data-path="chapter07/07_00_jvm_class_load_mechanism.html">
+            
+                
+                    <a href="../chapter07/07_00_jvm_class_load_mechanism.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                        虚拟机类加载机制
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="7.1" data-path="chapter07/07_01_load_class_time.html">
+            
+                
+                    <a href="../chapter07/07_01_load_class_time.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        类加载时机
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="chapter07/07_02_class_load_process.html">
+            
+                
+                    <a href="../chapter07/07_02_class_load_process.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.2.</b>
+                        
+                        类加载过程
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="chapter07/07_03_class_loader.html">
+            
+                
+                    <a href="../chapter07/07_03_class_loader.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.3.</b>
+                        
+                        类加载器
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="8" data-path="chapter08/08_00_jvm_class_execute_engine.html">
+            
+                
+                    <a href="../chapter08/08_00_jvm_class_execute_engine.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.</b>
+                        
+                        虚拟机字节码执行引擎
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="8.1" data-path="chapter08/08_01_method_invoke.html">
+            
+                
+                    <a href="../chapter08/08_01_method_invoke.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.1.</b>
+                        
+                        方法调用
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="8.2" data-path="chapter08/08_02_class_explain_exec_engine_base_on_stack.html">
+            
+                
+                    <a href="../chapter08/08_02_class_explain_exec_engine_base_on_stack.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.2.</b>
+                        
+                        基于栈的字节码解释执行引擎
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="9" data-path="chapter09/09_01_tomcat_class_loader.html">
+            
+                
+                    <a href="../chapter09/09_01_tomcat_class_loader.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.</b>
+                        
+                        常见的类加载构造器
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="9.1" data-path="chapter09/09_02_write_small_app.html">
+            
+                
+                    <a href="../chapter09/09_02_write_small_app.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.1.</b>
+                        
+                        实战：动手实现远程执行功能
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="10" data-path="chapter10/10_01_pre_compiler_optimize.html">
+            
+                
+                    <a href="../chapter10/10_01_pre_compiler_optimize.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.</b>
+                        
+                        早期（编译期）优化
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="10.1" data-path="chapter10/10_02_annotaion_implement.html">
+            
+                
+                    <a href="../chapter10/10_02_annotaion_implement.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.1.</b>
+                        
+                        实战：插入式注解处理器
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="11" data-path="chapter11/11_01_late_runtime_optimize.html">
+            
+                
+                    <a href="../chapter11/11_01_late_runtime_optimize.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>11.</b>
+                        
+                        晚期（运行期）优化
+                    </a>
+                
+            
+            
+        </li>
+    
+
+
+        
+        <li class="divider"></li>
+        <li>
+            <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                本书使用 GitBook 发布
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="目录"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search" aria-label="搜索"><i class="fa fa-search"></i></a>
+    
+    <div id="font-settings-wrapper" class="dropdown pull-left">
+        <a href="#" class="btn toggle-dropdown" aria-label="字体设置"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+    </div>
+
+    <div class="buttons font-family-list">
+        <button type="button" data-font="0" class="button">衬线体</button>
+        <button type="button" data-font="1" class="button">无衬线体</button>
+    </div>
+
+    <div class="buttons color-theme-list">
+        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">白色</button>
+        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">棕褐色</button>
+        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">夜间</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Actions Right -->
+    
+    <div class="dropdown pull-right">
+        <a href="#" class="btn toggle-dropdown" aria-label="分享"><i class="fa fa-share-alt"></i>
+        </a>
+        <div class="dropdown-menu font-settings dropdown-left">
+            <div class="dropdown-caret">
+                <span class="caret-outer"></span>
+                <span class="caret-inner"></span>
+            </div>
+            <div class="buttons">
+                <button type="button" data-sharing="twitter" class="button">
+                    分享到 Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    分享到 Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    分享到 Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    分享到 Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    分享到 Instapaper
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Google"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+    
+    
+    
+
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../" >InsightJVM Notebook</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc" target="_blank">DocToc</a></em></p>
+<ul>
+<li><a href="#%E7%90%86%E8%A7%A3gc%E6%97%A5%E5%BF%97">&#x7406;&#x89E3;GC&#x65E5;&#x5FD7;</a><ul>
+<li><a href="#jvm%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93">JVM&#x53C2;&#x6570;&#x603B;&#x7ED3;</a></li>
+<li><a href="#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93">&#x5783;&#x573E;&#x6536;&#x96C6;&#x5668;&#x53C2;&#x6570;&#x603B;&#x7ED3;</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<h1 id="%E7%90%86%E8%A7%A3gc%E6%97%A5%E5%BF%97">&#x7406;&#x89E3;GC&#x65E5;&#x5FD7;</h1>
+<p>&#x4E0B;&#x9762;&#x662F;&#x4E24;&#x6BB5;&#x5178;&#x578B;&#x7684;GC&#x65E5;&#x5FD7;&#xFF1A;</p>
+<pre><code>33.125: [GC [DefNew: 3324K-&gt;153K(3712K), 0.0025925 secs] 3324K-&gt;152K(11904K), 0.0031680 secs]   
+100.667: [Full GC [Tenured: 0K-&gt;210K(10240K), 0.0149142 secs] 4603K-&gt;210K(19456K), [Perm:2999K-&gt;2999K(21248K)], 0.0150007 secs] [Times: user=0.01 sys=0.00, real=0.02 secs]
+</code></pre><ul>
+<li>&#x6700;&#x524D;&#x9762;&#x7684;&#x6570;&#x5B57;&#x201C;33.124:&#x201D; &#x548C; &#x201C;100.667:&#x201D;- &#x4EE3;&#x8868;&#x4E86;GC&#x53D1;&#x751F;&#x7684;&#x65F6;&#x95F4;&#xFF0C;&#x8FD9;&#x4E2A;&#x6570;&#x5B57;&#x7684;&#x542B;&#x4E49;&#x662F;&#x4ECE;Java&#x865A;&#x62DF;&#x673A;&#x542F;&#x52A8;&#x4EE5;&#x6765;&#x7ECF;&#x8FC7;&#x7684;&#x79D2;&#x6570;&#x3002;</li>
+<li>GC&#x65E5;&#x5FD7;&#x5F00;&#x5934;&#x7684;&#x201C;[GC&#x201D;&#x548C;&#x201C;[Full GC&#x201D;&#x8BF4;&#x660E;&#x4E86;&#x8FD9;&#x6B21;&#x5783;&#x573E;&#x6536;&#x96C6;&#x7684;&#x505C;&#x987F;&#x7C7B;&#x578B;&#x3002;&#x5982;&#x679C;&#x6709;&#x201C;Full&#x201D;&#xFF0C;&#x8BF4;&#x660E;&#x8FD9;&#x6B21;GC&#x662F;&#x53D1;&#x751F;&#x4E86;Stop-The-World&#x7684;&#x3002;&#x5982;&#x679C;&#x662F;&#x8C03;&#x7528;System.gc()&#x65B9;&#x6CD5;&#x6240;&#x89E6;&#x53D1;&#x7684;&#x6536;&#x96C6;&#xFF0C;&#x90A3;&#x4E48;&#x5728;&#x8FD9;&#x91CC;&#x5C06;&#x663E;&#x793A;&#x201C;[Full GC(System)&#x201D;</li>
+<li>DefNew&#x3001;Tenured&#x3001;Perm &#x8868;&#x793A;GC&#x53D1;&#x751F;&#x7684;&#x533A;&#x57DF;&#xFF0C;&#x4E0D;&#x540C;GC&#x6536;&#x96C6;&#x5668;&#x663E;&#x793A;&#x7684;&#x540D;&#x5B57;&#x662F;&#x4E0D;&#x540C;&#x7684;&#x3002;Serial&#x6536;&#x96C6;&#x5668;&#xFF1A;DefNew&#xFF1B;ParNew&#x6536;&#x96C6;&#x5668;&#xFF1A;ParNew&#xFF1B;Parallel Scavenge&#x6536;&#x96C6;&#x5668;&#xFF1A;PSYoungGen</li>
+<li>3324K-&gt;152K(3712K) &#x542B;&#x4E49;&#x662F;GC&#x524D;&#x76D6;&#x5185;&#x5B58;&#x533A;&#x57DF;&#x5DF2;&#x4F7F;&#x7528;&#x7684;&#x5BB9;&#x91CF;-&gt;GC&#x540E;&#x8BE5;&#x5185;&#x5B58;&#x533A;&#x57DF;&#x5DF2;&#x4F7F;&#x7528;&#x7684;&#x5BB9;&#x91CF;&#xFF08;&#x8BE5;&#x5185;&#x5B58;&#x533A;&#x57DF;&#x603B;&#x5BB9;&#x91CF;&#xFF09;</li>
+<li>3324-&gt;152K(11904K) &#x97E9;&#x5F0F;&#x662F;GC&#x524D;Java&#x5806;&#x5DF2;&#x4F7F;&#x7528;&#x5BB9;&#x91CF;-&gt;GC&#x540E;Java&#x5806;&#x5DF2;&#x4F7F;&#x7528;&#x5BB9;&#x91CF;&#xFF08;Java&#x5806;&#x603B;&#x5BB9;&#x91CF;&#xFF09;</li>
+</ul>
+<p>&#x4E0B;&#x9762;&#x6211;&#x4EEC;&#x901A;&#x8FC7;&#x51E0;&#x4E2A;&#x4F8B;&#x5B50;&#x4ECE;&#x6D45;&#x5230;&#x6DF1;&#x8BB2;&#x89E3;&#x4E00;&#x4E0B;&#x5982;&#x4F55;&#x8BFB;&#x61C2;GC&#x65E5;&#x5FD7;&#x3002;</p>
+<p>&#x8FD9;&#x91CC;&#x6211;&#x4EEC;&#x6240;&#x6709;&#x7684;&#x4F8B;&#x5B50;&#x90FD;&#x5C06;&#x4EE5;&#x4E0B;&#x9762;&#x7684;JVM&#x53C2;&#x6570;&#x8FD0;&#x884C;&#xFF1A;</p>
+<pre><code>VM&#x53C2;&#x6570;&#xFF1A;-XX:+UseSerialGC -verbose:gc  -Xms20M -Xmx20M -Xmn10M -XX:+PrintGCDetails -XX:SurvivorRatio=8
+</code></pre><ul>
+<li>-XX:+UseSerialGC  &#x5F3A;&#x5236;&#x4F7F;&#x7528;Serial+SerialOld&#x6536;&#x96C6;&#x5668;&#x7EC4;&#x5408;</li>
+<li>-verbose:gc       &#x8F93;&#x51FA;&#x865A;&#x62DF;&#x673A;&#x4E2D;GC&#x7684;&#x8BE6;&#x7EC6;&#x60C5;&#x51B5;</li>
+<li>-Xms20M -Xmx20M -Xmn10M  &#x5806;&#x521D;&#x59CB;&#x5316;&#x5927;&#x5C0F;20M&#xFF0C;&#x5806;&#x6700;&#x5927;20M&#xFF0C;&#x65B0;&#x751F;&#x4EE3;&#x5927;&#x5C0F;10M</li>
+<li>-XX:+PrintGCDetails   &#x5783;&#x573E;&#x56DE;&#x6536;&#x65F6;&#x6253;&#x5370;&#x5185;&#x5B58;&#x56DE;&#x6536;&#x65E5;&#x5FD7;</li>
+<li>-XX:SurvivorRatio=8   Eden:Survivor=8:1</li>
+</ul>
+<p>&#x6240;&#x4EE5;&#x6700;&#x7EC8;JVM&#x5185;&#x5B58;&#x5206;&#x914D;&#x60C5;&#x51B5;&#x662F;&#xFF1A;Eden&#x533A; 8M&#xFF0C;FromSurvivor 1M&#xFF0C;ToSurvivor 1M&#xFF0C;&#x8001;&#x5E74;&#x4EE3; 10M&#x3002;</p>
+<pre><code class="lang-java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> <span class="hljs-number">_1</span>MB = <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>;
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">simpleGC1</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">byte</span>[] allocation1, allocation2;
+    allocation1 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[<span class="hljs-number">4</span> * <span class="hljs-number">_1</span>MB];
+    allocation2 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[<span class="hljs-number">4</span> * <span class="hljs-number">_1</span>MB];  
+}
+</code></pre>
+<p>&#x5F53;&#x8FD0;&#x884C;&#x5230;<code>allocation2 = new byte[4 * _1MB];</code>&#x65F6;&#xFF0C;&#x6B64;&#x65F6;Eden&#x533A;&#x5DF2;&#x5206;&#x914D;&#x4E86;4M+&#x5185;&#x5B58;&#xFF08;&#x56E0;&#x4E3A;&#x8FD8;&#x6709;&#x5176;&#x4ED6;&#x5BF9;&#x8C61;&#x4F1A;&#x5360;&#x7528;&#x5C11;&#x90E8;&#x5206;&#x7A7A;&#x95F4;&#xFF09;&#xFF0C;JVM&#x68C0;&#x6D4B;&#x5230;&#x65E0;&#x6CD5;&#x518D;&#x5728;Eden&#x7A7A;&#x95F4;&#x7ED9;allocation2&#x5206;&#x914D;4M&#x5185;&#x5B58;&#xFF0C;&#x4E8E;&#x662F;&#x53D1;&#x751F;&#x4E00;&#x6B21;Minor GC&#x3002;&#x5728;&#x5C06;allocation1&#x653E;&#x5230;Survivor&#x4E2D;&#x7684;&#x65F6;&#x5019;&#x53D1;&#x73B0;Survivor&#x65E0;&#x6CD5;&#x5BB9;&#x7EB3;&#x4E0B;4M&#x7684;&#x7A7A;&#x95F4;&#xFF0C;&#x4E8E;&#x662F;&#x5C06;allocation1&#x76F4;&#x63A5;&#x653E;&#x7F6E;&#x5230;&#x8001;&#x5E74;&#x4EE3;&#x4E2D;&#xFF0C;&#x6B64;&#x65F6;&#x8001;&#x5E74;&#x4EE3;&#x4E2D;&#x5E94;&#x8BE5;&#x6709;4M&#x7684;&#x5185;&#x5B58;&#x5360;&#x7528;&#xFF0C;&#x4E4B;&#x540E;&#x5783;&#x573E;&#x6536;&#x96C6;&#x7ED3;&#x675F;&#x3002;JVM&#x76F4;&#x63A5;&#x5728;Eden&#x7A7A;&#x95F4;&#x7ED9;allocation2&#x5206;&#x914D;&#x5185;&#x5B58;&#xFF0C;&#x6B64;&#x65F6;Eden&#x7A7A;&#x95F4;&#x5E94;&#x8BE5;&#x6709;4M&#x7684;&#x5185;&#x5B58;&#x5360;&#x7528;&#x3002;&#x67E5;&#x770B;GC&#x65E5;&#x5FD7;&#x53EF;&#x4EE5;&#x77E5;&#x9053;Eden&#x7A7A;&#x95F4;&#x5927;&#x7EA6;&#x5360;&#x7528;&#x4E86;4M&#x5185;&#x5B58;&#xFF0C;&#x8001;&#x5E74;&#x4EE3;&#x5927;&#x7EA6;&#x5360;&#x7528;&#x4E86;4M&#x5185;&#x5B58;&#xFF0C;&#x4E0E;&#x6211;&#x4EEC;&#x7684;&#x9884;&#x671F;&#x4E00;&#x81F4;&#x3002;</p>
+<pre><code>[GC[DefNew: 5423K-&gt;376K(9216K), 0.0053000 secs] 5423K-&gt;4472K(19456K), 0.0053260 secs] [Times: user=0.01 sys=0.00, real=0.01 secs] 
+Heap
+ def new generation   total 9216K, used 4723K [0x00000007f9a00000, 0x00000007fa400000, 0x00000007fa400000)
+  eden space 8192K,  53% used [0x00000007f9a00000, 0x00000007f9e3ebc0, 0x00000007fa200000)
+  from space 1024K,  36% used [0x00000007fa300000, 0x00000007fa35e388, 0x00000007fa400000)
+  to   space 1024K,   0% used [0x00000007fa200000, 0x00000007fa200000, 0x00000007fa300000)
+ tenured generation   total 10240K, used 4096K [0x00000007fa400000, 0x00000007fae00000, 0x00000007fae00000)
+   the space 10240K,  40% used [0x00000007fa400000, 0x00000007fa800010, 0x00000007fa800200, 0x00000007fae00000)
+ compacting perm gen  total 21248K, used 2930K [0x00000007fae00000, 0x00000007fc2c0000, 0x0000000800000000)
+   the space 21248K,  13% used [0x00000007fae00000, 0x00000007fb0dcae0, 0x00000007fb0dcc00, 0x00000007fc2c0000)
+No shared spaces configured.
+</code></pre><p>NOTE&#xFF1A;&#x5BF9;&#x4E8E;&#x6211;&#x4EEC;&#x7B97;&#x51FA;&#x6765;&#x7684;&#x5185;&#x5B58;&#x5360;&#x7528;&#x503C;&#x6709;&#x4E00;&#x4E9B;&#x8BEF;&#x5DEE;&#x662F;&#x6B63;&#x5E38;&#x7684;&#xFF0C;&#x56E0;&#x4E3A;&#x6211;&#x4EEC;&#x53EA;&#x662F;&#x7B97;&#x4E86;&#x5360;&#x5927;&#x591A;&#x6570;&#x7684;&#x90A3;&#x90E8;&#x5206;&#xFF0C;&#x7A0B;&#x5E8F;&#x4E2D;&#x8FD8;&#x6709;&#x4E00;&#x4E9B;&#x9759;&#x6001;&#x53D8;&#x91CF;&#x7B49;&#x4F1A;&#x5360;&#x7528;&#x4E00;&#x70B9;&#x5806;&#x5185;&#x5B58;&#x3002;</p>
+<pre><code class="lang-java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> <span class="hljs-number">_1</span>MB = <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>;
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">simpleGC2</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">byte</span>[] allocation1, allocation2, allocation3;
+    allocation1 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[<span class="hljs-number">_1</span>MB];
+    <span class="hljs-comment">//&#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x8FDB;&#x5165;&#x8001;&#x5E74;&#x4EE3;&#x53D6;&#x51B3;&#x4E8E;XX:MaxTenuringThreshold&#x8BBE;&#x7F6E;</span>
+    allocation2 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[<span class="hljs-number">4</span> * <span class="hljs-number">_1</span>MB];
+    allocation3 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[<span class="hljs-number">4</span> * <span class="hljs-number">_1</span>MB];  <span class="hljs-comment">//&#x8FD9;&#x91CC;&#x4EA7;&#x751F;&#x4E00;&#x6B21;Minor GC</span>
+    allocation3 = <span class="hljs-keyword">null</span>;
+    allocation3 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[<span class="hljs-number">4</span> * <span class="hljs-number">_1</span>MB];  <span class="hljs-comment">//&#x8FD9;&#x91CC;&#x4EA7;&#x751F;&#x4E00;&#x6B21;Minor GC</span>
+}
+</code></pre>
+<p>&#x4E0A;&#x9762;&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x662F;&#x5728;&#x300A;&#x6DF1;&#x5165;&#x7406;&#x89E3;Java&#x865A;&#x62DF;&#x673A;&#x300B;&#x4E2D;&#x7684;&#x4E00;&#x4E2A;&#x4F8B;&#x5B50;&#xFF0C;&#x5176;&#x4E2D;allocation3=null&#x662F;&#x4E0D;&#x662F;&#x6709;&#x4EC0;&#x4E48;&#x7279;&#x6B8A;&#x542B;&#x4E49;&#x5462;&#xFF1F;&#x5176;&#x5B9E;&#x8FD9;&#x4E00;&#x53E5;&#x6839;&#x672C;&#x6CA1;&#x5565;&#x4F5C;&#x7528;&#xFF0C;&#x6709;&#x548C;&#x6CA1;&#x6709;&#x6CA1;&#x5565;&#x533A;&#x522B;&#x3002;</p>
+<p>&#x5F53;&#x7A0B;&#x5E8F;&#x6267;&#x884C;&#x5230;&#x8FD9;&#x4E00;&#x53E5;<code>allocation3 = new byte[4 * _1MB];</code>&#x7684;&#x65F6;&#x5019;&#xFF0C;Eden&#x7A7A;&#x95F4;&#x5DF2;&#x7ECF;&#x5206;&#x914D;&#x4E86;5M&#x5185;&#x5B58;&#xFF0C;&#x4E0D;&#x591F;&#x518D;&#x5206;&#x914D;4M&#x5185;&#x5B58;&#x4E86;&#xFF0C;&#x6B64;&#x65F6;&#x4F1A;&#x4EA7;&#x751F;&#x4E00;&#x6B21;Minor GC&#xFF0C;&#x5C06;allocation1&#x548C;allocation2&#x653E;&#x5230;&#x8001;&#x5E74;&#x4EE3;&#x91CC;&#x3002;GC&#x6267;&#x884C;&#x5B8C;&#x4E4B;&#x540E;&#xFF0C;&#x5C06;allcation3&#x5206;&#x914D;&#x5230;Eden&#x7A7A;&#x95F4;&#x4E2D;&#xFF0C;&#x6B64;&#x65F6;Eden&#x7A7A;&#x95F4;&#x5360;&#x7528;4M&#x3002;&#x4E4B;&#x540E;&#x6267;&#x884C;<code>allocation3=null</code>&#x5176;&#x5B9E;&#x53EA;&#x662F;&#x628A;&#x5BF9;&#x8C61;&#x6307;&#x5411;&#x7684;&#x5BF9;&#x8C61;&#x7F6E;&#x4E3A;&#x7A7A;&#x800C;&#x5DF2;&#x3002;&#x7A0B;&#x5E8F;&#x6267;&#x884C;&#x5230;<code>allocation3 = new byte[4 * _1MB];</code>&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x53D1;&#x73B0;Eden&#x7A7A;&#x95F4;&#x4E0D;&#x591F;&#x7528;&#x4E86;&#xFF0C;&#x518D;&#x6B21;&#x4FC3;&#x53D1;&#x4E00;&#x6B21;Minor GC&#xFF0C;&#x6B64;&#x65F6;allocation1&#x3001;allocation2&#x4E0D;&#x4F1A;&#x88AB;&#x56DE;&#x6536;&#xFF0C;&#x800C;allocation3&#x4F1A;&#x88AB;&#x56DE;&#x6536;&#x3002;Minor GC&#x7ED3;&#x675F;&#x4E4B;&#x540E;&#xFF0C;&#x8001;&#x5E74;&#x4EE3;&#x5360;&#x7528;5M&#xFF0C;&#x800C;JVM&#x4F1A;&#x7ED9;allocation3&#x518D;&#x5728;Eden&#x533A;&#x5206;&#x914D;4M&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#xFF0C;&#x56E0;&#x6B64;Eden&#x533A;&#x5360;&#x7528;4M&#x3002;&#x4ECE;GC&#x65E5;&#x5FD7;&#x4E2D;&#x53EF;&#x4EE5;&#x8BC1;&#x660E;&#x6211;&#x4EEC;&#x63A8;&#x8BBA;&#x7684;&#x6B63;&#x786E;&#x3002;</p>
+<p>&#x6240;&#x4EE5;&#x8BF4;&#xFF0C;&#x5176;&#x5B9E;<code>allocation3=null</code>&#x8FD9;&#x6761;&#x8BED;&#x53E5;&#x6CA1;&#x5565;&#x4F5C;&#x7528;&#xFF0C;&#x5982;&#x679C;&#x8981;&#x8BF4;&#x4F5C;&#x7528;&#xFF0C;&#x90A3;&#x4E48;&#x8BA9;&#x5185;&#x5B58;&#x5C11;&#x5360;&#x7528;&#x70B9;&#x7A7A;&#x95F4;&#x5427;&#xFF0C;&#x9632;&#x6B62;&#x56E0;&#x4E3A;&#x5185;&#x5B58;&#x4E0D;&#x8DB3;&#x800C;&#x6EA2;&#x51FA;&#xFF0C;&#x6216;&#x8BB8;&#x300A;&#x6DF1;&#x5165;&#x7406;&#x89E3;Java&#x865A;&#x62DF;&#x673A;&#x300B;&#x7684;&#x4F5C;&#x8005;&#x5C31;&#x662F;&#x8FD9;&#x4E2A;&#x610F;&#x601D;&#xFF1F;</p>
+<p>GC&#x65E5;&#x5FD7;&#xFF1A;</p>
+<pre><code>[GC[DefNew: 6447K-&gt;377K(9216K), 0.0057550 secs] 6447K-&gt;5497K(19456K), 0.0057840 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC[DefNew: 4641K-&gt;357K(9216K), 0.0030110 secs] 9761K-&gt;5477K(19456K), 0.0030340 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+Heap
+ def new generation   total 9216K, used 4647K [0x00000007f9a00000, 0x00000007fa400000, 0x00000007fa400000)
+  eden space 8192K,  52% used [0x00000007f9a00000, 0x00000007f9e30660, 0x00000007fa200000)
+  from space 1024K,  34% used [0x00000007fa200000, 0x00000007fa259780, 0x00000007fa300000)
+  to   space 1024K,   0% used [0x00000007fa300000, 0x00000007fa300000, 0x00000007fa400000)
+ tenured generation   total 10240K, used 5120K [0x00000007fa400000, 0x00000007fae00000, 0x00000007fae00000)
+   the space 10240K,  50% used [0x00000007fa400000, 0x00000007fa900020, 0x00000007fa900200, 0x00000007fae00000)
+ compacting perm gen  total 21248K, used 2931K [0x00000007fae00000, 0x00000007fc2c0000, 0x0000000800000000)
+   the space 21248K,  13% used [0x00000007fae00000, 0x00000007fb0dcc00, 0x00000007fb0dcc00, 0x00000007fc2c0000)
+No shared spaces configured.
+</code></pre><h2 id="jvm%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93">JVM&#x53C2;&#x6570;&#x603B;&#x7ED3;</h2>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;&#x540D;</th>
+<th>&#x542B;&#x4E49;</th>
+<th>&#x9ED8;&#x8BA4;&#x503C;</th>
+<th>&#x5907;&#x6CE8;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-Xms</td>
+<td>&#x521D;&#x59CB;&#x5806;&#x5927;&#x5C0F;</td>
+<td>&#x7269;&#x7406;&#x5185;&#x5B58;&#x7684;1/64(&lt;1GB)</td>
+<td>&#x9ED8;&#x8BA4;(MinHeapFreeRatio&#x53C2;&#x6570;&#x53EF;&#x4EE5;&#x8C03;&#x6574;)&#x7A7A;&#x4F59;&#x5806;&#x5185;&#x5B58;&#x5C0F;&#x4E8E;40%&#x65F6;&#xFF0C;JVM&#x5C31;&#x4F1A;&#x589E;&#x5927;&#x5806;&#x76F4;&#x5230;-Xmx&#x7684;&#x6700;&#x5927;&#x9650;&#x5236;.</td>
+</tr>
+<tr>
+<td>-Xmx</td>
+<td>&#x6700;&#x5927;&#x5806;&#x5927;&#x5C0F;</td>
+<td>&#x7269;&#x7406;&#x5185;&#x5B58;&#x7684;1/4(&lt;1GB)</td>
+<td>&#x9ED8;&#x8BA4;(MaxHeapFreeRatio&#x53C2;&#x6570;&#x53EF;&#x4EE5;&#x8C03;&#x6574;)&#x7A7A;&#x4F59;&#x5806;&#x5185;&#x5B58;&#x5927;&#x4E8E;70%&#x65F6;&#xFF0C;JVM&#x4F1A;&#x51CF;&#x5C11;&#x5806;&#x76F4;&#x5230; -Xms&#x7684;&#x6700;&#x5C0F;&#x9650;&#x5236;</td>
+</tr>
+<tr>
+<td>-Xmn</td>
+<td>&#x5E74;&#x8F7B;&#x4EE3;&#x5927;&#x5C0F;(1.4or lator)</td>
+<td></td>
+<td>&#x589E;&#x5927;&#x5E74;&#x8F7B;&#x4EE3;&#x540E;,&#x5C06;&#x4F1A;&#x51CF;&#x5C0F;&#x5E74;&#x8001;&#x4EE3;&#x5927;&#x5C0F;.&#x6B64;&#x503C;&#x5BF9;&#x7CFB;&#x7EDF;&#x6027;&#x80FD;&#x5F71;&#x54CD;&#x8F83;&#x5927;,Sun&#x5B98;&#x65B9;&#x63A8;&#x8350;&#x914D;&#x7F6E;&#x4E3A;&#x6574;&#x4E2A;&#x5806;&#x7684;3/8</td>
+</tr>
+<tr>
+<td>-XX:PermSize</td>
+<td>&#x8BBE;&#x7F6E;&#x6301;&#x4E45;&#x4EE3;(perm gen)&#x521D;&#x59CB;&#x503C;</td>
+<td>&#x7269;&#x7406;&#x5185;&#x5B58;&#x7684;1/64</td>
+<td></td>
+</tr>
+<tr>
+<td>-XX:MaxPermSize</td>
+<td>&#x8BBE;&#x7F6E;&#x6301;&#x4E45;&#x4EE3;&#x6700;&#x5927;&#x503C;</td>
+<td>&#x7269;&#x7406;&#x5185;&#x5B58;&#x7684;1/4</td>
+<td></td>
+</tr>
+<tr>
+<td>-Xss</td>
+<td>&#x6BCF;&#x4E2A;&#x7EBF;&#x7A0B;&#x7684;&#x5806;&#x6808;&#x5927;&#x5C0F;</td>
+<td>JDK5.0&#x4EE5;&#x540E;&#x6BCF;&#x4E2A;&#x7EBF;&#x7A0B;&#x5806;&#x6808;&#x5927;&#x5C0F;&#x4E3A;1M</td>
+<td>&#x4E00;&#x822C;&#x5C0F;&#x7684;&#x5E94;&#x7528;&#xFF0C; &#x5982;&#x679C;&#x6808;&#x4E0D;&#x662F;&#x5F88;&#x6DF1;&#xFF0C; &#x5E94;&#x8BE5;&#x662F;128k&#x591F;&#x7528;&#x7684; &#x5927;&#x7684;&#x5E94;&#x7528;&#x5EFA;&#x8BAE;&#x4F7F;&#x7528;256k&#x3002;</td>
+</tr>
+<tr>
+<td>-XX:NewRatio</td>
+<td>&#x5E74;&#x8F7B;&#x4EE3;(&#x5305;&#x62EC;Eden&#x548C;&#x4E24;&#x4E2A;Survivor&#x533A;)&#x4E0E;&#x5E74;&#x8001;&#x4EE3;&#x7684;&#x6BD4;&#x503C;(&#x9664;&#x53BB;&#x6301;&#x4E45;&#x4EE3;)</td>
+<td></td>
+<td>-XX:NewRatio=4&#x8868;&#x793A;&#x5E74;&#x8F7B;&#x4EE3;&#x4E0E;&#x5E74;&#x8001;&#x4EE3;&#x6240;&#x5360;&#x6BD4;&#x503C;&#x4E3A;1:4,&#x5E74;&#x8F7B;&#x4EE3;&#x5360;&#x6574;&#x4E2A;&#x5806;&#x6808;&#x7684;1/5</td>
+<td>Xms=Xmx &#x5E76;&#x4E14;&#x8BBE;&#x7F6E;&#x4E86;Xmn&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x8BE5;&#x53C2;&#x6570;&#x4E0D;&#x9700;&#x8981;&#x8FDB;&#x884C;&#x8BBE;&#x7F6E;&#x3002;</td>
+</tr>
+<tr>
+<td>-XX:SurvivorRatio</td>
+<td>Eden&#x533A;&#x4E0E;Survivor&#x533A;&#x7684;&#x5927;&#x5C0F;&#x6BD4;&#x503C;</td>
+<td>&#x9ED8;&#x8BA4;&#x4E3A;8</td>
+<td>&#x8BBE;&#x7F6E;&#x4E3A;8,&#x5219;&#x4E24;&#x4E2A;Survivor&#x533A;&#x4E0E;&#x4E00;&#x4E2A;Eden&#x533A;&#x7684;&#x6BD4;&#x503C;&#x4E3A;2:8,&#x4E00;&#x4E2A;Survivor&#x533A;&#x5360;&#x6574;&#x4E2A;&#x5E74;&#x8F7B;&#x4EE3;&#x7684;1/10</td>
+</tr>
+<tr>
+<td>-XX:MaxTenuringThreshold</td>
+<td>&#x5783;&#x573E;&#x6700;&#x5927;&#x5E74;&#x9F84;</td>
+<td></td>
+<td>&#x5982;&#x679C;&#x8BBE;&#x7F6E;&#x4E3A;0&#x7684;&#x8BDD;,&#x5219;&#x5E74;&#x8F7B;&#x4EE3;&#x5BF9;&#x8C61;&#x4E0D;&#x7ECF;&#x8FC7;Survivor&#x533A;,&#x76F4;&#x63A5;&#x8FDB;&#x5165;&#x5E74;&#x8001;&#x4EE3;. &#x5BF9;&#x4E8E;&#x5E74;&#x8001;&#x4EE3;&#x6BD4;&#x8F83;&#x591A;&#x7684;&#x5E94;&#x7528;,&#x53EF;&#x4EE5;&#x63D0;&#x9AD8;&#x6548;&#x7387;.&#x5982;&#x679C;&#x5C06;&#x6B64;&#x503C;&#x8BBE;&#x7F6E;&#x4E3A;&#x4E00;&#x4E2A;&#x8F83;&#x5927;&#x503C;,&#x5219;&#x5E74;&#x8F7B;&#x4EE3;&#x5BF9;&#x8C61;&#x4F1A;&#x5728;Survivor&#x533A;&#x8FDB;&#x884C;&#x591A;&#x6B21;&#x590D;&#x5236;,&#x8FD9;&#x6837;&#x53EF;&#x4EE5;&#x589E;&#x52A0;&#x5BF9;&#x8C61;&#x518D;&#x5E74;&#x8F7B;&#x4EE3;&#x7684;&#x5B58;&#x6D3B; &#x65F6;&#x95F4;,&#x589E;&#x52A0;&#x5728;&#x5E74;&#x8F7B;&#x4EE3;&#x5373;&#x88AB;&#x56DE;&#x6536;&#x7684;&#x6982;&#x7387;&#x8BE5;&#x53C2;&#x6570;&#x53EA;&#x6709;&#x5728;&#x4E32;&#x884C;GC&#x65F6;&#x624D;&#x6709;&#x6548;.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93">&#x5783;&#x573E;&#x6536;&#x96C6;&#x5668;&#x53C2;&#x6570;&#x603B;&#x7ED3;</h2>
+<ul>
+<li><strong>-XX:+PrintGC</strong>&#xFF1A;&#x5F00;&#x542F;GC&#x65E5;&#x5FD7;&#x6253;&#x5370;&#x3002;&#x9ED8;&#x8BA4;&#x4E0D;&#x5F00;&#x542F;</li>
+<li><strong>-XX:-PrintGCDetails</strong>&#xFF1A;&#x6253;&#x5370;GC&#x56DE;&#x6536;&#x7684;&#x7EC6;&#x8282;&#x3002;1.4.0&#x5F15;&#x5165;&#xFF0C;&#x9ED8;&#x8BA4;&#x4E0D;&#x542F;&#x7528;&#x3002;</li>
+<li><strong>XX:+PrintTenuringDistribution</strong>&#xFF1A;&#x67E5;&#x770B;&#x6BCF;&#x6B21;minor GC&#x540E;&#x65B0;&#x7684;&#x5B58;&#x6D3B;&#x5468;&#x671F;&#x7684;&#x9608;&#x503C;</li>
+</ul>
+<p>&#x53C2;&#x8003;&#x8D44;&#x6599;&#xFF1A;<br>1.<a href="http://www.blogjava.net/bitbit/archive/2009/11/30/304247.html" target="_blank">Java 6 JVM&#x53C2;&#x6570;&#x9009;&#x9879;&#x5927;&#x5168;&#xFF08;&#x4E2D;&#x6587;&#x7248;&#xFF09;</a>
+2.<a href="http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html" target="_blank">http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html</a>
+3.<a href="http://www.cnblogs.com/redcreen/archive/2011/05/05/2038331.html" target="_blank">http://www.cnblogs.com/redcreen/archive/2011/05/05/2038331.html</a></p>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../chapter03/03_03_gc_collector.html" class="navigation navigation-prev " aria-label="Previous page: 垃圾回收器"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../chapter03/03_05_gc_allocate_and_recycle_strategy.html" class="navigation navigation-next " aria-label="Next page: 内存分配策略"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../gitbook/app.js"></script>
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-livereload/plugin.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

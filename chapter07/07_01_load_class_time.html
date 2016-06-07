@@ -1,0 +1,1196 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>类加载时机 | InsightJVM Notebook</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.1.0">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../gitbook/style.css">
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../chapter07/07_02_class_load_process.html" />
+    
+    
+    <link rel="prev" href="../chapter07/07_00_jvm_class_load_mechanism.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="7.1" data-basepath=".." data-revision="Tue Jun 07 2016 22:58:44 GMT+0800 (CST)">
+    
+
+<div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="输入并搜索" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+        
+        
+        
+
+        
+
+        
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../index.html">
+                        <i class="fa fa-check"></i>
+                        
+                        《深入理解Java虚拟机》概述
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="chapter01/00_01_java_tech_sys.html">
+            
+                
+                    <a href="../chapter01/00_01_java_tech_sys.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Java技术体系
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1" data-path="chapter01/00_02_java_history.html">
+            
+                
+                    <a href="../chapter01/00_02_java_history.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.1.</b>
+                        
+                        Java发展史
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="chapter01/00_03_jvm_history.html">
+            
+                
+                    <a href="../chapter01/00_03_jvm_history.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.2.</b>
+                        
+                        Java虚拟机发展史
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="chapter01/00_04_java_future.html">
+            
+                
+                    <a href="../chapter01/00_04_java_future.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.3.</b>
+                        
+                        Java技术的趋势
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="chapter01/00_05_compile_ur_own_jdk.html">
+            
+                
+                    <a href="../chapter01/00_05_compile_ur_own_jdk.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.4.</b>
+                        
+                        编译自己的JDK
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="chapter02/01_01_runtime_data_area.html">
+            
+                
+                    <a href="../chapter02/01_01_runtime_data_area.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Java运行时数据区域
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1" data-path="chapter02/01_02_create_object_in_hotspot.html">
+            
+                
+                    <a href="../chapter02/01_02_create_object_in_hotspot.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.</b>
+                        
+                        HotSpot虚拟机对象
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="chapter02/01_03_out_of_memory_error.html">
+            
+                
+                    <a href="../chapter02/01_03_out_of_memory_error.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.</b>
+                        
+                        OutOfMemoryError异常
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="chapter03/03_01_reference_type.html">
+            
+                
+                    <a href="../chapter03/03_01_reference_type.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Java中的引用类型
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="chapter03/03_02_gc.html">
+            
+                
+                    <a href="../chapter03/03_02_gc.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        垃圾回收
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="chapter03/03_03_gc_collector.html">
+            
+                
+                    <a href="../chapter03/03_03_gc_collector.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        垃圾回收器
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="chapter03/03_04_gc_log.html">
+            
+                
+                    <a href="../chapter03/03_04_gc_log.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        理解GC日志
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="chapter03/03_05_gc_allocate_and_recycle_strategy.html">
+            
+                
+                    <a href="../chapter03/03_05_gc_allocate_and_recycle_strategy.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.4.</b>
+                        
+                        内存分配策略
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="chapter04/04_00_monitor_tool.html">
+            
+                
+                    <a href="../chapter04/04_00_monitor_tool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        虚拟机性能监控与故障处理工具
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1" data-path="chapter04/04_01_jdk_commander_tool.html">
+            
+                
+                    <a href="../chapter04/04_01_jdk_commander_tool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.1.</b>
+                        
+                        JDK命令行工具
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="chapter04/04_02_visualize_tool.html">
+            
+                
+                    <a href="../chapter04/04_02_visualize_tool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.</b>
+                        
+                        JDK的可视化工具
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="chapter05/05_00_optimize_demo.html">
+            
+                
+                    <a href="../chapter05/05_00_optimize_demo.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        调优案例分析与实战
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1" data-path="chapter05/05_01_high_performance_app_strategy.html">
+            
+                
+                    <a href="../chapter05/05_01_high_performance_app_strategy.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.1.</b>
+                        
+                        高性能硬件上的程序部署策略
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="chapter05/05_02_cluster_oom.html">
+            
+                
+                    <a href="../chapter05/05_02_cluster_oom.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.2.</b>
+                        
+                        集群间同步导致的内存溢出
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="chapter05/05_03_direct_memory_oom.html">
+            
+                
+                    <a href="../chapter05/05_03_direct_memory_oom.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.3.</b>
+                        
+                        堆外内存导致的溢出错误
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="chapter05/05_04_outside_command_slow.html">
+            
+                
+                    <a href="../chapter05/05_04_outside_command_slow.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.4.</b>
+                        
+                        外部命令导致系统缓慢
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.5" data-path="chapter05/05_05_server_jvm_down.html">
+            
+                
+                    <a href="../chapter05/05_05_server_jvm_down.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.5.</b>
+                        
+                        服务器JVM进程崩溃
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.6" data-path="chapter05/05_06_incorrect_data_structure.html">
+            
+                
+                    <a href="../chapter05/05_06_incorrect_data_structure.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.6.</b>
+                        
+                        不恰当数据结构导致内存占用过大
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.7" data-path="chapter05/05_07_virture_memory_slow.html">
+            
+                
+                    <a href="../chapter05/05_07_virture_memory_slow.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.7.</b>
+                        
+                        Windows虚拟内存导致的长时间停顿
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="6" data-path="chapter06/06_00_jvm_subsystem.html">
+            
+                
+                    <a href="../chapter06/06_00_jvm_subsystem.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                        虚拟机执行子系统
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="6.1" data-path="chapter06/06_01_00_class_file_structure.html">
+            
+                
+                    <a href="../chapter06/06_01_00_class_file_structure.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.</b>
+                        
+                        类文件结构
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="6.1.1" data-path="chapter06/06_01_01_magic_num_and_version.html">
+            
+                
+                    <a href="../chapter06/06_01_01_magic_num_and_version.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.1.</b>
+                        
+                        魔数与Class文件的版本
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.2" data-path="chapter06/06_01_02_constant_pool.html">
+            
+                
+                    <a href="../chapter06/06_01_02_constant_pool.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.2.</b>
+                        
+                        常量池
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.3" data-path="chapter06/06_01_03_access_flag.html">
+            
+                
+                    <a href="../chapter06/06_01_03_access_flag.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.3.</b>
+                        
+                        访问标志
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.4" data-path="chapter06/06_01_04_class_parent_interface.html">
+            
+                
+                    <a href="../chapter06/06_01_04_class_parent_interface.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.4.</b>
+                        
+                        类索引、父类索引、接口索引集合
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.5" data-path="chapter06/06_01_05_field_info.html">
+            
+                
+                    <a href="../chapter06/06_01_05_field_info.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.5.</b>
+                        
+                        字段表集合
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.6" data-path="chapter06/06_01_06_method_info.html">
+            
+                
+                    <a href="../chapter06/06_01_06_method_info.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.6.</b>
+                        
+                        方法表集合
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.1.7" data-path="chapter06/06_01_07_attr_info.html">
+            
+                
+                    <a href="../chapter06/06_01_07_attr_info.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.1.7.</b>
+                        
+                        属性表集合
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="chapter06/06_02_00_byte_code_order.html">
+            
+                
+                    <a href="../chapter06/06_02_00_byte_code_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.</b>
+                        
+                        字节码指令简介
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="6.2.1" data-path="chapter06/06_02_01_load_store_order.html">
+            
+                
+                    <a href="../chapter06/06_02_01_load_store_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.1.</b>
+                        
+                        加载和存储指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.2" data-path="chapter06/06_02_02_calc_order.html">
+            
+                
+                    <a href="../chapter06/06_02_02_calc_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.2.</b>
+                        
+                        运算指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.3" data-path="chapter06/06_02_03_type_transfer_order.html">
+            
+                
+                    <a href="../chapter06/06_02_03_type_transfer_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.3.</b>
+                        
+                        类型转换指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.4" data-path="chapter06/06_02_04_create_obj_and_access_order.html">
+            
+                
+                    <a href="../chapter06/06_02_04_create_obj_and_access_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.4.</b>
+                        
+                        对象创建于访问指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.5" data-path="chapter06/06_02_05_opcode_mng_order.html">
+            
+                
+                    <a href="../chapter06/06_02_05_opcode_mng_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.5.</b>
+                        
+                        操作数栈管理指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.6" data-path="chapter06/06_02_06_control_transfer_order.html">
+            
+                
+                    <a href="../chapter06/06_02_06_control_transfer_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.6.</b>
+                        
+                        控制转移指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.7" data-path="chapter06/06_02_07_method_call_and_return_order.html">
+            
+                
+                    <a href="../chapter06/06_02_07_method_call_and_return_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.7.</b>
+                        
+                        方法调用和返回指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.8" data-path="chapter06/06_02_08_exp_handle_order.html">
+            
+                
+                    <a href="../chapter06/06_02_08_exp_handle_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.8.</b>
+                        
+                        异常处理指令
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2.9" data-path="chapter06/06_02_09_synchronized_order.html">
+            
+                
+                    <a href="../chapter06/06_02_09_synchronized_order.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.2.9.</b>
+                        
+                        同步指令
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="7" data-path="chapter07/07_00_jvm_class_load_mechanism.html">
+            
+                
+                    <a href="../chapter07/07_00_jvm_class_load_mechanism.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                        虚拟机类加载机制
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="7.1" data-path="chapter07/07_01_load_class_time.html">
+            
+                
+                    <a href="../chapter07/07_01_load_class_time.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        类加载时机
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="chapter07/07_02_class_load_process.html">
+            
+                
+                    <a href="../chapter07/07_02_class_load_process.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.2.</b>
+                        
+                        类加载过程
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="chapter07/07_03_class_loader.html">
+            
+                
+                    <a href="../chapter07/07_03_class_loader.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.3.</b>
+                        
+                        类加载器
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="8" data-path="chapter08/08_00_jvm_class_execute_engine.html">
+            
+                
+                    <a href="../chapter08/08_00_jvm_class_execute_engine.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.</b>
+                        
+                        虚拟机字节码执行引擎
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="8.1" data-path="chapter08/08_01_method_invoke.html">
+            
+                
+                    <a href="../chapter08/08_01_method_invoke.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.1.</b>
+                        
+                        方法调用
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="8.2" data-path="chapter08/08_02_class_explain_exec_engine_base_on_stack.html">
+            
+                
+                    <a href="../chapter08/08_02_class_explain_exec_engine_base_on_stack.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.2.</b>
+                        
+                        基于栈的字节码解释执行引擎
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="9" data-path="chapter09/09_01_tomcat_class_loader.html">
+            
+                
+                    <a href="../chapter09/09_01_tomcat_class_loader.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.</b>
+                        
+                        常见的类加载构造器
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="9.1" data-path="chapter09/09_02_write_small_app.html">
+            
+                
+                    <a href="../chapter09/09_02_write_small_app.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.1.</b>
+                        
+                        实战：动手实现远程执行功能
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="10" data-path="chapter10/10_01_pre_compiler_optimize.html">
+            
+                
+                    <a href="../chapter10/10_01_pre_compiler_optimize.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.</b>
+                        
+                        早期（编译期）优化
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="10.1" data-path="chapter10/10_02_annotaion_implement.html">
+            
+                
+                    <a href="../chapter10/10_02_annotaion_implement.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.1.</b>
+                        
+                        实战：插入式注解处理器
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="11" data-path="chapter11/11_01_late_runtime_optimize.html">
+            
+                
+                    <a href="../chapter11/11_01_late_runtime_optimize.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>11.</b>
+                        
+                        晚期（运行期）优化
+                    </a>
+                
+            
+            
+        </li>
+    
+
+
+        
+        <li class="divider"></li>
+        <li>
+            <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                本书使用 GitBook 发布
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="目录"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search" aria-label="搜索"><i class="fa fa-search"></i></a>
+    
+    <div id="font-settings-wrapper" class="dropdown pull-left">
+        <a href="#" class="btn toggle-dropdown" aria-label="字体设置"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+    </div>
+
+    <div class="buttons font-family-list">
+        <button type="button" data-font="0" class="button">衬线体</button>
+        <button type="button" data-font="1" class="button">无衬线体</button>
+    </div>
+
+    <div class="buttons color-theme-list">
+        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">白色</button>
+        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">棕褐色</button>
+        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">夜间</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Actions Right -->
+    
+    <div class="dropdown pull-right">
+        <a href="#" class="btn toggle-dropdown" aria-label="分享"><i class="fa fa-share-alt"></i>
+        </a>
+        <div class="dropdown-menu font-settings dropdown-left">
+            <div class="dropdown-caret">
+                <span class="caret-outer"></span>
+                <span class="caret-inner"></span>
+            </div>
+            <div class="buttons">
+                <button type="button" data-sharing="twitter" class="button">
+                    分享到 Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    分享到 Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    分享到 Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    分享到 Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    分享到 Instapaper
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Google"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+    
+    
+    
+
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../" >InsightJVM Notebook</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc" target="_blank">DocToc</a></em></p>
+<ul>
+<li><a href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%97%B6%E6%9C%BA">&#x7C7B;&#x52A0;&#x8F7D;&#x65F6;&#x673A;</a><ul>
+<li><a href="#%E4%B8%BB%E5%8A%A8%E5%BC%95%E7%94%A8">&#x4E3B;&#x52A8;&#x5F15;&#x7528;</a></li>
+<li><a href="#%E8%A2%AB%E5%8A%A8%E5%BC%95%E7%94%A8">&#x88AB;&#x52A8;&#x5F15;&#x7528;</a><ul>
+<li><a href="#%E9%80%9A%E8%BF%87%E5%AD%90%E7%B1%BB%E5%BC%95%E7%94%A8%E7%88%B6%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E5%AD%97%E6%AE%B5">&#x901A;&#x8FC7;&#x5B50;&#x7C7B;&#x5F15;&#x7528;&#x7236;&#x7C7B;&#x7684;&#x9759;&#x6001;&#x5B57;&#x6BB5;</a></li>
+<li><a href="#%E9%80%9A%E8%BF%87%E5%AE%9A%E4%B9%89%E6%95%B0%E7%BB%84%E7%B1%BB%E5%BC%95%E7%94%A8%E7%B1%BB">&#x901A;&#x8FC7;&#x5B9A;&#x4E49;&#x6570;&#x7EC4;&#x7C7B;&#x5F15;&#x7528;&#x7C7B;</a></li>
+<li><a href="#%E5%B8%B8%E9%87%8F%E5%9C%A8%E7%BC%96%E8%AF%91%E9%98%B6%E6%AE%B5%E5%AD%98%E5%85%A5%E8%B0%83%E7%94%A8%E7%B1%BB%E7%9A%84%E5%B8%B8%E9%87%8F%E6%B1%A0%E4%B8%AD">&#x5E38;&#x91CF;&#x5728;&#x7F16;&#x8BD1;&#x9636;&#x6BB5;&#x5B58;&#x5165;&#x8C03;&#x7528;&#x7C7B;&#x7684;&#x5E38;&#x91CF;&#x6C60;&#x4E2D;</a></li>
+<li><a href="#%E6%8E%A5%E5%8F%A3%E4%B8%BB%E5%8A%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E6%97%B6%E6%9C%BA">&#x63A5;&#x53E3;&#x4E3B;&#x52A8;&#x521D;&#x59CB;&#x5316;&#x7684;&#x65F6;&#x673A;</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<h1 id="%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%97%B6%E6%9C%BA">&#x7C7B;&#x52A0;&#x8F7D;&#x65F6;&#x673A;</h1>
+<p>&#x7C7B;&#x4ECE;&#x88AB;&#x52A0;&#x8F7D;&#x5230;&#x865A;&#x62DF;&#x673A;&#x5185;&#x5B58;&#x5F00;&#x59CB;&#xFF0C;&#x5230;&#x5378;&#x8F7D;&#x51FA;&#x5185;&#x5B58;&#x4E3A;&#x6B62;&#xFF0C;&#x5B83;&#x7684;&#x6574;&#x4E2A;&#x751F;&#x547D;&#x5468;&#x671F;&#x5305;&#x62EC;&#xFF1A;&#x52A0;&#x8F7D;&#x3001;&#x9A8C;&#x8BC1;&#x3001;&#x51C6;&#x5907;&#x3001;&#x89E3;&#x6790;&#x3001;&#x521D;&#x59CB;&#x5316;&#x3001;&#x4F7F;&#x7528;&#x548C;&#x5378;&#x8F7D;&#xFF0C;&#x5176;&#x4E2D;&#x9A8C;&#x8BC1;&#x3001;&#x51C6;&#x5907;&#x3001;&#x89E3;&#x6790;3&#x4E2A;&#x90E8;&#x5206;&#x7EDF;&#x79F0;&#x4E3A;&#x8FDE;&#x63A5;&#x3002;</p>
+<p><img src="../img/07/07_01_class_life_cycle.png" alt=""></p>
+<p>&#x5728;&#x4E0A;&#x9762;&#x7684;&#x7C7B;&#x751F;&#x547D;&#x5468;&#x671F;&#x4E2D;&#xFF0C;&#x52A0;&#x8F7D;&#x3001;&#x9A8C;&#x8BC1;&#x3001;&#x51C6;&#x5907;&#x3001;&#x521D;&#x59CB;&#x5316;&#x548C;&#x5378;&#x8F7D;&#x8FD9;5&#x4E2A;&#x8FC7;&#x7A0B;&#x7684;&#x987A;&#x5E8F;&#x662F;&#x786E;&#x5B9A;&#x7684;&#xFF0C;&#x7C7B;&#x7684;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;&#x4F1A;&#x6309;&#x7167;&#x8FD9;&#x4E2A;&#x8FC7;&#x7A0B;&#x6309;&#x90E8;&#x5C31;&#x73ED;&#x5730;&#x8FDB;&#x884C;&#xFF0C;&#x4F46;&#x89E3;&#x6790;&#x9636;&#x6BB5;&#x5219;&#x4E0D;&#x4E00;&#x5B9A;&#xFF1A;&#x5B83;&#x5728;&#x67D0;&#x4E9B;&#x60C5;&#x51B5;&#x4E0B;&#x53EF;&#x4EE5;&#x5728;&#x521D;&#x59CB;&#x5316;&#x9636;&#x6BB5;&#x4E4B;&#x540E;&#x518D;&#x5F00;&#x59CB;&#xFF0C;&#x8FD9;&#x662F;&#x4E3A;&#x4E86;&#x652F;&#x6301;Java&#x8BED;&#x8A00;&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x7ED1;&#x5B9A;&#x3002;</p>
+<h2 id="%E4%B8%BB%E5%8A%A8%E5%BC%95%E7%94%A8">&#x4E3B;&#x52A8;&#x5F15;&#x7528;</h2>
+<p>&#x5728;Java&#x865A;&#x62DF;&#x673A;&#x89C4;&#x8303;&#x4E2D;&#x89C4;&#x5B9A;&#x4E86;&#x4EE5;&#x4E0B;5&#x79CD;&#x60C5;&#x5F62;&#x5FC5;&#x987B;&#x7ACB;&#x5373;&#x5BF9;&#x7C7B;&#x8FDB;&#x884C;&#x521D;&#x59CB;&#x5316;&#xFF0C;&#x8FD9;5&#x79CD;&#x573A;&#x666F;&#x4E2D;&#x7684;&#x884C;&#x4E3A;&#x79F0;&#x4E3A;&#x5BF9;&#x4E00;&#x4E2A;&#x7C7B;&#x8FDB;&#x884C;&#x4E3B;&#x52A8;&#x5F15;&#x7528;&#x3002;</p>
+<ul>
+<li>&#x9047;&#x5230;new&#x3001;getstatic&#x3001;putstatic &#x6216; invokestatic &#x8FD9;4&#x6761;&#x5B57;&#x8282;&#x7801;&#x6307;&#x4EE4;&#x65F6;&#xFF0C;&#x5982;&#x679C;&#x7C7B;&#x6CA1;&#x6709;&#x8FDB;&#x884C;&#x521D;&#x59CB;&#x5316;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x5148;&#x89E6;&#x53D1;&#x5176;&#x521D;&#x59CB;&#x5316;&#x3002;&#x751F;&#x6210;&#x8FD9;4&#x6761;&#x5B57;&#x8282;&#x7801;&#x6307;&#x4EE4;&#x6700;&#x5E38;&#x89C1;&#x7684;Java&#x4EE3;&#x7801;&#x573A;&#x666F;&#x662F;&#xFF1A;&#x4F7F;&#x7528;new&#x5173;&#x952E;&#x5B57;&#x5B9E;&#x4F8B;&#x5316;&#x5BF9;&#x8C61;&#x7684;&#x65F6;&#x5019;&#x3001;&#x8BFB;&#x53D6;&#x6216;&#x8BBE;&#x7F6E;&#x4E00;&#x4E2A;&#x96F7;&#x7684;&#x9759;&#x6001;&#x5B57;&#x6BB5;&#xFF08;&#x88AB;final&#x4FEE;&#x9970;&#x3001;&#x5DF2;&#x5728;&#x7F16;&#x8BD1;&#x5668;&#x628A;&#x7ED3;&#x679C;&#x653E;&#x5165;&#x5E38;&#x91CF;&#x6C60;&#x7684;&#x9759;&#x6001;&#x5B57;&#x6BB5;&#x9664;&#x5916;&#xFF09;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4EE5;&#x53CA;&#x8C03;&#x7528;&#x4E00;&#x4E2A;&#x7C7B;&#x7684;&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x7684;&#x65F6;&#x5019;&#x3002;</li>
+<li>&#x4F7F;&#x7528;java.lang.reflect&#x5305;&#x7684;&#x65B9;&#x6CD5;&#x5BF9;&#x7C7B;&#x8FDB;&#x884C;&#x53CD;&#x5C04;&#x8C03;&#x7528;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5982;&#x679C;&#x7C7B;&#x6CA1;&#x6709;&#x8FDB;&#x884C;&#x8FC7;&#x521D;&#x59CB;&#x5316;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x5148;&#x89E6;&#x53D1;&#x5176;&#x521D;&#x59CB;&#x5316;&#x3002;</li>
+<li>&#x5F53;&#x521D;&#x59CB;&#x5316;&#x4E00;&#x4E2A;&#x7C7B;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5982;&#x679C;&#x53D1;&#x73B0;&#x5176;&#x7236;&#x7C7B;&#x8FD8;&#x6CA1;&#x6709;&#x8FDB;&#x884C;&#x8FC7;&#x521D;&#x59CB;&#x5316;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x5148;&#x89E6;&#x53D1;&#x5176;&#x7236;&#x7C7B;&#x7684;&#x521D;&#x59CB;&#x5316;&#x3002;</li>
+<li>&#x5F53;&#x865A;&#x62DF;&#x673A;&#x542F;&#x52A8;&#x65F6;&#xFF0C;&#x7528;&#x6237;&#x9700;&#x8981;&#x6307;&#x5B9A;&#x4E00;&#x4E2A;&#x8981;&#x6267;&#x884C;&#x7684;&#x4E3B;&#x7C7B;&#xFF08;&#x5305;&#x542B;main()&#x65B9;&#x6CD5;&#x7684;&#x90A3;&#x4E2A;&#x7C7B;&#xFF09;&#xFF0C;&#x865A;&#x62DF;&#x673A;&#x4F1A;&#x5148;&#x521D;&#x59CB;&#x5316;&#x8FD9;&#x4E2A;&#x4E3B;&#x7C7B;&#x3002;</li>
+<li>&#x5F53;&#x4F7F;&#x7528;JDK1.7&#x7684;&#x52A8;&#x6001;&#x8BED;&#x8A00;&#x652F;&#x6301;&#x65F6;&#xFF0C;&#x5982;&#x679C;&#x4E00;&#x4E2A;java.lang.invoke.MethodHandle&#x5B9E;&#x4F8B;&#x6700;&#x540E;&#x7684;&#x89E3;&#x6790;&#x7ED3;&#x679C;&#x662F;REF_getStatic&#x3001;REF_putStatic&#x3001;REF_invokeStatic&#x7684;&#x65B9;&#x6CD5;&#x53E5;&#x67C4;&#xFF0C;&#x5E76;&#x4E14;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x53E5;&#x67C4;&#x6240;&#x5BF9;&#x5E94;&#x7684;&#x7C7B;&#x6CA1;&#x6709;&#x8FDB;&#x884C;&#x8FC7;&#x521D;&#x59CB;&#x5316;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x5148;&#x89E6;&#x53D1;&#x5176;&#x521D;&#x59CB;&#x5316;&#x3002;</li>
+</ul>
+<p>&#x5BF9;&#x4E8E;&#x4E0A;&#x9762;5&#x79CD;&#x4E3B;&#x52A8;&#x5F15;&#x7528;&#xFF0C;&#x865A;&#x62DF;&#x673A;&#x89C4;&#x8303;&#x4E2D;&#x4F7F;&#x7528;&#x4E86;&#x4E00;&#x4E2A;&#x5F88;&#x5F3A;&#x70C8;&#x7684;&#x9650;&#x5B9A;&#x4E8E;&#xFF1A;&#x201C;&#x6709;&#x4E14;&#x53EA;&#x6709;&#x201D;&#xFF0C;&#x5373;&#x6709;&#x4E14;&#x53EA;&#x6709;&#x4E0A;&#x8FF0;5&#x79CD;&#x60C5;&#x51B5;&#x4F1A;&#x5F15;&#x53D1;&#x865A;&#x62DF;&#x673A;&#x4E3B;&#x52A8;&#x53BB;&#x521D;&#x59CB;&#x5316;&#x3002;</p>
+<h2 id="%E8%A2%AB%E5%8A%A8%E5%BC%95%E7%94%A8">&#x88AB;&#x52A8;&#x5F15;&#x7528;</h2>
+<p>&#x4E0E;&#x4E3B;&#x52A8;&#x5F15;&#x7528;&#x76F8;&#x5BF9;&#x7684;&#x662F;&#x88AB;&#x52A8;&#x5F15;&#x7528;&#xFF0C;&#x88AB;&#x52A8;&#x5F15;&#x7528;&#x6307;&#x7684;&#x662F;&#x6240;&#x6709;&#x5F15;&#x7528;&#x7C7B;&#x7684;&#x65B9;&#x5F0F;&#x90FD;&#x4E0D;&#x4F1A;&#x89E6;&#x53D1;&#x521D;&#x59CB;&#x5316;&#x3002;</p>
+<h3 id="%E9%80%9A%E8%BF%87%E5%AD%90%E7%B1%BB%E5%BC%95%E7%94%A8%E7%88%B6%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E5%AD%97%E6%AE%B5">&#x901A;&#x8FC7;&#x5B50;&#x7C7B;&#x5F15;&#x7528;&#x7236;&#x7C7B;&#x7684;&#x9759;&#x6001;&#x5B57;&#x6BB5;</h3>
+<p>&#x5F53;&#x901A;&#x8FC7;&#x5B50;&#x7C7B;&#x5F15;&#x7528;&#x7236;&#x7C7B;&#x7684;&#x9759;&#x6001;&#x5B57;&#x6BB5;&#x65F6;&#xFF0C;&#x4E0D;&#x4F1A;&#x5BFC;&#x81F4;&#x5B50;&#x7C7B;&#x521D;&#x59CB;&#x5316;&#x3002;</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PassiveReference</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String args[])</span> </span>{
+        System.out.println(SubClass.value);
+    }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SuperClass</span></span>{
+    <span class="hljs-keyword">static</span> {
+        System.out.println(<span class="hljs-string">&quot;SuperClass init!&quot;</span>);
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> value = <span class="hljs-number">123</span>;
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SubClass</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">SuperClass</span> </span>{
+    <span class="hljs-keyword">static</span> {
+        System.out.println(<span class="hljs-string">&quot;SubClass init!&quot;</span>);
+    }
+}
+</code></pre>
+<p>&#x8FD0;&#x884C;&#x4E0A;&#x9762;&#x7684;&#x7A0B;&#x5E8F;&#xFF0C;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#xFF1A;</p>
+<pre><code>SuperClass init!
+123
+</code></pre><p>&#x4ECE;&#x7ED3;&#x679C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#x53EA;&#x6709;&#x7236;&#x7C7B;&#x88AB;&#x521D;&#x59CB;&#x5316;&#x4E86;&#x800C;&#x5B50;&#x7C7B;&#x6CA1;&#x6709;&#x88AB;&#x521D;&#x59CB;&#x5316;&#x3002;&#x8FD9;&#x662F;&#x56E0;&#x4E3A;&#x5BF9;&#x4E8E;&#x9759;&#x6001;&#x5B57;&#x6BB5;&#xFF0C;&#x53EA;&#x6709;&#x76F4;&#x63A5;&#x5B9A;&#x4E49;&#x8FD9;&#x4E2A;&#x5B57;&#x6BB5;&#x7684;&#x7C7B;&#x624D;&#x4F1A;&#x88AB;&#x521D;&#x59CB;&#x5316;&#xFF0C;&#x56E0;&#x6B64;&#x901A;&#x8FC7;&#x5176;&#x5B50;&#x7C7B;&#x6765;&#x5F15;&#x7528;&#x7236;&#x7C7B;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x9759;&#x6001;&#x5B57;&#x6BB5;&#xFF0C;&#x53EA;&#x4F1A;&#x89E6;&#x53D1;&#x7236;&#x7C7B;&#x7684;&#x521D;&#x59CB;&#x5316;&#x800C;&#x4E0D;&#x4F1A;&#x89E6;&#x53D1;&#x5B50;&#x7C7B;&#x7684;&#x521D;&#x59CB;&#x5316;&#x3002;</p>
+<h3 id="%E9%80%9A%E8%BF%87%E5%AE%9A%E4%B9%89%E6%95%B0%E7%BB%84%E7%B1%BB%E5%BC%95%E7%94%A8%E7%B1%BB">&#x901A;&#x8FC7;&#x5B9A;&#x4E49;&#x6570;&#x7EC4;&#x7C7B;&#x5F15;&#x7528;&#x7C7B;</h3>
+<p>&#x4E3A;&#x4E86;&#x8282;&#x7701;&#x7248;&#x9762;&#xFF0C;&#x6211;&#x4EEC;&#x590D;&#x7528;&#x4E86;&#x4E0A;&#x9762;&#x7684;SuperClass&#x548C;SubClass&#xFF0C;&#x4F46;&#x4FEE;&#x6539;main()&#x65B9;&#x6CD5;&#x7684;&#x5185;&#x5BB9;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PassiveReference</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String args[])</span> </span>{
+        SuperClass[] sca = <span class="hljs-keyword">new</span> SuperClass[<span class="hljs-number">10</span>];
+    }
+}
+</code></pre>
+<p>&#x8FD0;&#x884C;&#x4E4B;&#x540E;&#x53D1;&#x73B0;&#x5176;&#x6839;&#x672C;&#x5C31;&#x6CA1;&#x6709;&#x8F93;&#x51FA;&#x201C;SuperClass init&#x201D;&#xFF0C;&#x8FD9;&#x8BF4;&#x660E;&#x5176;&#x6CA1;&#x6709;&#x89E6;&#x53D1;SuperClass&#x7684;&#x521D;&#x59CB;&#x5316;&#x3002;</p>
+<h3 id="%E5%B8%B8%E9%87%8F%E5%9C%A8%E7%BC%96%E8%AF%91%E9%98%B6%E6%AE%B5%E5%AD%98%E5%85%A5%E8%B0%83%E7%94%A8%E7%B1%BB%E7%9A%84%E5%B8%B8%E9%87%8F%E6%B1%A0%E4%B8%AD">&#x5E38;&#x91CF;&#x5728;&#x7F16;&#x8BD1;&#x9636;&#x6BB5;&#x5B58;&#x5165;&#x8C03;&#x7528;&#x7C7B;&#x7684;&#x5E38;&#x91CF;&#x6C60;&#x4E2D;</h3>
+<p>&#x5982;&#x679C;&#x4E00;&#x4E2A;&#x5C5E;&#x6027;&#x88AB;<code>static final</code>&#x4FEE;&#x6539;&#xFF0C;&#x90A3;&#x5B83;&#x5C31;&#x662F;&#x4E00;&#x4E2A;&#x5E38;&#x91CF;&#xFF0C;&#x5B83;&#x4F1A;&#x5728;&#x7F16;&#x8BD1;&#x9636;&#x6BB5;&#x5C31;&#x5199;&#x5165;&#x8C03;&#x7528;&#x7C7B;&#x7684;&#x5E38;&#x91CF;&#x6C60;&#x3002;&#x8FD9;&#x65F6;&#x5019;&#x5373;&#x4F7F;&#x76F4;&#x63A5;&#x5F15;&#x7528;&#x5230;&#x5B9A;&#x4E49;&#x5E38;&#x91CF;&#x7684;&#x7C7B;&#xFF0C;&#x4E5F;&#x4E0D;&#x4F1A;&#x89E6;&#x53D1;&#x5B9A;&#x4E49;&#x5E38;&#x91CF;&#x7684;&#x7C7B;&#x7684;&#x521D;&#x59CB;&#x5316;&#x3002;</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NotInitialization</span> </span>{
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String args[])</span> </span>{
+        System.out.println(ConstClass.HELLO_WORLD);
+    }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConstClass</span></span>{
+    <span class="hljs-keyword">static</span> {
+        System.out.println(<span class="hljs-string">&quot;ConstClass init!&quot;</span>);
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String HELLO_WORLD = <span class="hljs-string">&quot;hello world!&quot;</span>;
+}
+</code></pre>
+<p>&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#xFF1A;</p>
+<pre><code class="lang-bash">hello world!
+</code></pre>
+<h3 id="%E6%8E%A5%E5%8F%A3%E4%B8%BB%E5%8A%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E6%97%B6%E6%9C%BA">&#x63A5;&#x53E3;&#x4E3B;&#x52A8;&#x521D;&#x59CB;&#x5316;&#x7684;&#x65F6;&#x673A;</h3>
+<p>&#x63A5;&#x53E3;&#x4E0E;&#x7C7B;&#x771F;&#x6B63;&#x6709;&#x6240;&#x533A;&#x522B;&#x7684;&#x662F;&#x524D;&#x9762;&#x8BB2;&#x8FF0;&#x7684;5&#x79CD;&#x201C;&#x6709;&#x4E14;&#x53EA;&#x6709;&#x201D;&#x9700;&#x8981;&#x5F00;&#x59CB;&#x521D;&#x59CB;&#x5316;&#x573A;&#x666F;&#x4E2D;&#x7684;&#x7B2C;3&#x79CD;&#xFF1A;&#x5F53;&#x4E00;&#x4E2A;&#x7C7B;&#x5728;&#x521D;&#x59CB;&#x5316;&#x65F6;&#xFF0C;&#x8981;&#x6C42;&#x5176;&#x7236;&#x7C7B;&#x5168;&#x90E8;&#x90FD;&#x5DF2;&#x7ECF;&#x521D;&#x59CB;&#x5316;&#x8FC7;&#x4E86;&#xFF0C;&#x4F46;&#x662F;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#x5728;&#x521D;&#x59CB;&#x5316;&#x65F6;&#xFF0C;&#x5E76;&#x4E0D;&#x8981;&#x6C42;&#x5176;&#x7236;&#x63A5;&#x53E3;&#x5168;&#x90E8;&#x90FD;&#x5B8C;&#x6210;&#x4E86;&#x521D;&#x59CB;&#x5316;&#xFF0C;&#x53EA;&#x6709;&#x5728;&#x771F;&#x6B63;&#x4F7F;&#x7528;&#x5230;&#x4E86;&#x7236;&#x63A5;&#x53E3;&#x7684;&#x65F6;&#x5019;&#xFF08;&#x5982;&#x5F15;&#x7528;&#x63A5;&#x53E3;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x5E38;&#x91CF;&#xFF09;&#x624D;&#x4F1A;&#x521D;&#x59CB;&#x5316;&#x3002;</p>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../chapter07/07_00_jvm_class_load_mechanism.html" class="navigation navigation-prev " aria-label="Previous page: 虚拟机类加载机制"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../chapter07/07_02_class_load_process.html" class="navigation navigation-next " aria-label="Next page: 类加载过程"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../gitbook/app.js"></script>
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-livereload/plugin.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>
