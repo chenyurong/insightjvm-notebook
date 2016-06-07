@@ -1,3 +1,18 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [JDK命令行工具](#jdk%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7)
+  - [jps：虚拟机进程状况工具](#jps%EF%BC%9A%E8%99%9A%E6%8B%9F%E6%9C%BA%E8%BF%9B%E7%A8%8B%E7%8A%B6%E5%86%B5%E5%B7%A5%E5%85%B7)
+  - [jstat：虚拟机统计信息监视工具](#jstat%EF%BC%9A%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF%E7%9B%91%E8%A7%86%E5%B7%A5%E5%85%B7)
+  - [jinfo：Java配置信息工具](#jinfo%EF%BC%9Ajava%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF%E5%B7%A5%E5%85%B7)
+  - [jmap：java内存映像工具](#jmap%EF%BC%9Ajava%E5%86%85%E5%AD%98%E6%98%A0%E5%83%8F%E5%B7%A5%E5%85%B7)
+  - [jhat：虚拟机堆转存储快照分析工具](#jhat%EF%BC%9A%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%A0%86%E8%BD%AC%E5%AD%98%E5%82%A8%E5%BF%AB%E7%85%A7%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7)
+  - [jstack：Java堆栈跟踪工具](#jstack%EF%BC%9Ajava%E5%A0%86%E6%A0%88%E8%B7%9F%E8%B8%AA%E5%B7%A5%E5%85%B7)
+  - [HSDIS：JIT生成代码反汇编](#hsdis%EF%BC%9Ajit%E7%94%9F%E6%88%90%E4%BB%A3%E7%A0%81%E5%8F%8D%E6%B1%87%E7%BC%96)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # JDK命令行工具
 
 1、

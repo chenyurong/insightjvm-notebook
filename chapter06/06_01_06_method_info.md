@@ -1,3 +1,11 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [方法表集合](#%E6%96%B9%E6%B3%95%E8%A1%A8%E9%9B%86%E5%90%88)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 方法表集合
 
 在字段表后的2个字节是一个方法计数器，表示类中总有有几个方法。在字段计数器后，才是具体的方法数据。其数据项如下图所示：

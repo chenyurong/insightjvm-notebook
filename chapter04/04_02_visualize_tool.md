@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [JDK的可视化工具](#jdk%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7)
+  - [JConsole：Java监视与管理控制台](#jconsole%EF%BC%9Ajava%E7%9B%91%E8%A7%86%E4%B8%8E%E7%AE%A1%E7%90%86%E6%8E%A7%E5%88%B6%E5%8F%B0)
+    - [启动 JConsole](#%E5%90%AF%E5%8A%A8-jconsole)
+    - [内存监控](#%E5%86%85%E5%AD%98%E7%9B%91%E6%8E%A7)
+    - [线程监控](#%E7%BA%BF%E7%A8%8B%E7%9B%91%E6%8E%A7)
+  - [VisualVM：多合一故障处理工具](#visualvm%EF%BC%9A%E5%A4%9A%E5%90%88%E4%B8%80%E6%95%85%E9%9A%9C%E5%A4%84%E7%90%86%E5%B7%A5%E5%85%B7)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # JDK的可视化工具
 
 JDK中除了提供大量的明命令行工具外，还提供了两个强大的可视化工具：JConsole 和 VisualVm。

@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Java虚拟机发展史](#java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%8F%91%E5%B1%95%E5%8F%B2)
+  - [Sun Classic VM](#sun-classic-vm)
+  - [Exact VM](#exact-vm)
+  - [Sun HotSpot VM](#sun-hotspot-vm)
+  - [BEA JRockit](#bea-jrockit)
+  - [IBM J9 VM](#ibm-j9-vm)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Java虚拟机发展史
 
 ## Sun Classic VM

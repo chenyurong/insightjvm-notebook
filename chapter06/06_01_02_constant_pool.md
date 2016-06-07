@@ -1,3 +1,13 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [常量池](#%E5%B8%B8%E9%87%8F%E6%B1%A0)
+  - [字面量](#%E5%AD%97%E9%9D%A2%E9%87%8F)
+  - [符号引用](#%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 常量池
 
 紧接着主次版本号之后是常量池入口，常量池可以理解为 Class 文件之中的资源仓库，它是 Class 文件结构中与其他项目关联最多的数据类型。由于常量池数量不是固定的，所以在常量池的入口需要放置一个 u2 类型的数据，代表常量池容量计数值，并且这个计数器是从 1 而不是 0 开始的。在常量池容量计数值后才是对应的常量值。

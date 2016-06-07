@@ -1,3 +1,17 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [类加载时机](#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%97%B6%E6%9C%BA)
+  - [主动引用](#%E4%B8%BB%E5%8A%A8%E5%BC%95%E7%94%A8)
+  - [被动引用](#%E8%A2%AB%E5%8A%A8%E5%BC%95%E7%94%A8)
+    - [通过子类引用父类的静态字段](#%E9%80%9A%E8%BF%87%E5%AD%90%E7%B1%BB%E5%BC%95%E7%94%A8%E7%88%B6%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E5%AD%97%E6%AE%B5)
+    - [通过定义数组类引用类](#%E9%80%9A%E8%BF%87%E5%AE%9A%E4%B9%89%E6%95%B0%E7%BB%84%E7%B1%BB%E5%BC%95%E7%94%A8%E7%B1%BB)
+    - [常量在编译阶段存入调用类的常量池中](#%E5%B8%B8%E9%87%8F%E5%9C%A8%E7%BC%96%E8%AF%91%E9%98%B6%E6%AE%B5%E5%AD%98%E5%85%A5%E8%B0%83%E7%94%A8%E7%B1%BB%E7%9A%84%E5%B8%B8%E9%87%8F%E6%B1%A0%E4%B8%AD)
+    - [接口主动初始化的时机](#%E6%8E%A5%E5%8F%A3%E4%B8%BB%E5%8A%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E6%97%B6%E6%9C%BA)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 类加载时机
 
 类从被加载到虚拟机内存开始，到卸载出内存为止，它的整个生命周期包括：加载、验证、准备、解析、初始化、使用和卸载，其中验证、准备、解析3个部分统称为连接。

@@ -1,3 +1,13 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [理解GC日志](#%E7%90%86%E8%A7%A3gc%E6%97%A5%E5%BF%97)
+  - [JVM参数总结](#jvm%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93)
+  - [垃圾收集器参数总结](#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 理解GC日志
 
 下面是两段典型的GC日志：

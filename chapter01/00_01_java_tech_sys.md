@@ -1,3 +1,14 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Java技术体系](#java%E6%8A%80%E6%9C%AF%E4%BD%93%E7%B3%BB)
+  - [Java API](#java-api)
+  - [JDK](#jdk)
+  - [JRE](#jre)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Java技术体系
 
 Sun 官方定义的Java技术体系包括以下几个组成部分：

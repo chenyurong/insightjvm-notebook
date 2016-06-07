@@ -1,3 +1,13 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [魔数与Class文件的版本](#%E9%AD%94%E6%95%B0%E4%B8%8Eclass%E6%96%87%E4%BB%B6%E7%9A%84%E7%89%88%E6%9C%AC)
+  - [魔数](#%E9%AD%94%E6%95%B0)
+  - [版本号](#%E7%89%88%E6%9C%AC%E5%8F%B7)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 魔数与Class文件的版本
 
 ## 魔数

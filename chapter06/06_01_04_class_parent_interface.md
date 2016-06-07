@@ -1,3 +1,14 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [类索引、父类索引、接口索引集合](#%E7%B1%BB%E7%B4%A2%E5%BC%95%E3%80%81%E7%88%B6%E7%B1%BB%E7%B4%A2%E5%BC%95%E3%80%81%E6%8E%A5%E5%8F%A3%E7%B4%A2%E5%BC%95%E9%9B%86%E5%90%88)
+  - [类索引](#%E7%B1%BB%E7%B4%A2%E5%BC%95)
+  - [父类索引](#%E7%88%B6%E7%B1%BB%E7%B4%A2%E5%BC%95)
+  - [接口索引集合](#%E6%8E%A5%E5%8F%A3%E7%B4%A2%E5%BC%95%E9%9B%86%E5%90%88)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 类索引、父类索引、接口索引集合
 
 类索引和父类索引都是一个u2类型的数据，而接口索引集合是一组u2类型的数据的集合，Class文件中由这三项数据来确定这个类的继承关系。

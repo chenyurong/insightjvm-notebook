@@ -1,3 +1,23 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [属性表集合](#%E5%B1%9E%E6%80%A7%E8%A1%A8%E9%9B%86%E5%90%88)
+  - [Code属性](#code%E5%B1%9E%E6%80%A7)
+  - [00 00 异常表数量](#00-00-%E5%BC%82%E5%B8%B8%E8%A1%A8%E6%95%B0%E9%87%8F)
+  - [Exceptions属性](#exceptions%E5%B1%9E%E6%80%A7)
+  - [LineNumberTable属性](#linenumbertable%E5%B1%9E%E6%80%A7)
+  - [LocalVariableTable属性](#localvariabletable%E5%B1%9E%E6%80%A7)
+  - [SourceFile属性](#sourcefile%E5%B1%9E%E6%80%A7)
+  - [ConstantValue属性](#constantvalue%E5%B1%9E%E6%80%A7)
+  - [InnerClasses属性](#innerclasses%E5%B1%9E%E6%80%A7)
+  - [Deprecated 及 Synthetic属性](#deprecated-%E5%8F%8A-synthetic%E5%B1%9E%E6%80%A7)
+  - [StackMapTable 属性](#stackmaptable-%E5%B1%9E%E6%80%A7)
+  - [Signature 属性](#signature-%E5%B1%9E%E6%80%A7)
+  - [BootstrapMethods 属性](#bootstrapmethods-%E5%B1%9E%E6%80%A7)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 属性表集合
 
 在Class文件中字段表、方法表都可以携带自己的属性表集合，用于描述某些场景专有的信息。

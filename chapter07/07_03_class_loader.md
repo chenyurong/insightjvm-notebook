@@ -1,3 +1,18 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [类加载器](#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8)
+  - [双亲委派模型](#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B)
+    - [工作过程](#%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B)
+    - [好处](#%E5%A5%BD%E5%A4%84)
+  - [破坏双亲委派模型](#%E7%A0%B4%E5%9D%8F%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B)
+    - [JDK1.2发布之前](#jdk12%E5%8F%91%E5%B8%83%E4%B9%8B%E5%89%8D)
+    - [模型自身缺陷](#%E6%A8%A1%E5%9E%8B%E8%87%AA%E8%BA%AB%E7%BC%BA%E9%99%B7)
+    - [追求动态性](#%E8%BF%BD%E6%B1%82%E5%8A%A8%E6%80%81%E6%80%A7)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 类加载器
 
 虚拟机设计团队把类加载阶段中的“通过一个类的全限定名来获取描述此类的二进制字节流”这个动作放到Java虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。实现这个动作的代码模块称为“类加载器”。

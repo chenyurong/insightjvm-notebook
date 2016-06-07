@@ -1,3 +1,28 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [类加载过程](#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B)
+  - [加载](#%E5%8A%A0%E8%BD%BD)
+  - [验证](#%E9%AA%8C%E8%AF%81)
+    - [文件格式验证](#%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E9%AA%8C%E8%AF%81)
+    - [元数据校验](#%E5%85%83%E6%95%B0%E6%8D%AE%E6%A0%A1%E9%AA%8C)
+    - [字节码验证](#%E5%AD%97%E8%8A%82%E7%A0%81%E9%AA%8C%E8%AF%81)
+    - [符号引用验证](#%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E9%AA%8C%E8%AF%81)
+  - [准备](#%E5%87%86%E5%A4%87)
+  - [解析](#%E8%A7%A3%E6%9E%90)
+    - [符号引用](#%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8)
+    - [直接引用](#%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8)
+    - [符号引用解析缓存](#%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E8%A7%A3%E6%9E%90%E7%BC%93%E5%AD%98)
+    - [类或接口的解析](#%E7%B1%BB%E6%88%96%E6%8E%A5%E5%8F%A3%E7%9A%84%E8%A7%A3%E6%9E%90)
+    - [字段解析](#%E5%AD%97%E6%AE%B5%E8%A7%A3%E6%9E%90)
+    - [类方法解析](#%E7%B1%BB%E6%96%B9%E6%B3%95%E8%A7%A3%E6%9E%90)
+    - [接口方法解析](#%E6%8E%A5%E5%8F%A3%E6%96%B9%E6%B3%95%E8%A7%A3%E6%9E%90)
+  - [初始化](#%E5%88%9D%E5%A7%8B%E5%8C%96)
+    - [<clinit>()方法执行细节](#clinit%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E7%BB%86%E8%8A%82)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 类加载过程
 
 Java虚拟机中类加载的全过程，也就是加载、验证、准备、解析和初始化5个阶段锁执行的具体动作。

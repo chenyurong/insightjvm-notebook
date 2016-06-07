@@ -1,3 +1,11 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [访问标志](#%E8%AE%BF%E9%97%AE%E6%A0%87%E5%BF%97)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 访问标志
 
 在常量池结束之后，紧接着的两个字节代表访问标记（access_flags），这个标志用于识别一些类或者接口层次的访问信息，包括：这个Class是类还是接口；是否定义为public类型；是否定义为abstract类型等。具体的标志位以及标志的含义见下表。

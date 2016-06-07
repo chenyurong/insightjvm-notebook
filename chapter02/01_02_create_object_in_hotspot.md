@@ -1,3 +1,20 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [HotSpot虚拟机对象](#hotspot%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AF%B9%E8%B1%A1)
+  - [空间分配](#%E7%A9%BA%E9%97%B4%E5%88%86%E9%85%8D)
+  - [内存空间初始化](#%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E5%88%9D%E5%A7%8B%E5%8C%96)
+  - [对象设置](#%E5%AF%B9%E8%B1%A1%E8%AE%BE%E7%BD%AE)
+  - [初始化](#%E5%88%9D%E5%A7%8B%E5%8C%96)
+  - [对象的内存布局](#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80)
+    - [对象头](#%E5%AF%B9%E8%B1%A1%E5%A4%B4)
+    - [实例数据](#%E5%AE%9E%E4%BE%8B%E6%95%B0%E6%8D%AE)
+    - [对齐填充](#%E5%AF%B9%E9%BD%90%E5%A1%AB%E5%85%85)
+  - [对象的访问定位](#%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # HotSpot虚拟机对象
 
 一个对象在JVM中从编译到创建完成需要经历很多过程，大概可以分为：空间分配、内存空间初始化、对象设置、初始化。

@@ -2,9 +2,8 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [高性能硬件上的程序部署策略](#%E9%AB%98%E6%80%A7%E8%83%BD%E7%A1%AC%E4%BB%B6%E4%B8%8A%E7%9A%84%E7%A8%8B%E5%BA%8F%E9%83%A8%E7%BD%B2%E7%AD%96%E7%95%A5)
+- [实战：动手实现远程执行功能](#%E5%AE%9E%E6%88%98%EF%BC%9A%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%89%A7%E8%A1%8C%E5%8A%9F%E8%83%BD)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# 高性能硬件上的程序部署策略
-
+# 实战：动手实现远程执行功能

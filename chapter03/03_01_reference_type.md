@@ -1,3 +1,15 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Java中的引用类型](#java%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B)
+  - [强引用](#%E5%BC%BA%E5%BC%95%E7%94%A8)
+  - [软引用](#%E8%BD%AF%E5%BC%95%E7%94%A8)
+  - [弱引用](#%E5%BC%B1%E5%BC%95%E7%94%A8)
+  - [虚引用](#%E8%99%9A%E5%BC%95%E7%94%A8)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Java中的引用类型 
 
 在C/C++中有指针这个概念，指针直接指向了对象所在的内存地址。而Java中则没有指针的概念，如果我们要找到一个对象，我们一般是通过引用的方式找到。

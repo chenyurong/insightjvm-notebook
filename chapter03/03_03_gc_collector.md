@@ -1,3 +1,20 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [垃圾回收器](#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8)
+  - [新生代垃圾回收器](#%E6%96%B0%E7%94%9F%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8)
+    - [Serial收集器](#serial%E6%94%B6%E9%9B%86%E5%99%A8)
+    - [ParNew收集器](#parnew%E6%94%B6%E9%9B%86%E5%99%A8)
+    - [Parallel Scavenge收集器](#parallel-scavenge%E6%94%B6%E9%9B%86%E5%99%A8)
+  - [老年代垃圾回收器](#%E8%80%81%E5%B9%B4%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8)
+    - [Serial Old收集器](#serial-old%E6%94%B6%E9%9B%86%E5%99%A8)
+    - [Parallel Old收集器](#parallel-old%E6%94%B6%E9%9B%86%E5%99%A8)
+    - [CMS](#cms)
+  - [G1收集器](#g1%E6%94%B6%E9%9B%86%E5%99%A8)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 垃圾回收器
 
 垃圾回收器根据不同内存区域，有不同的垃圾回收器。新生代回收器主要有：Serial收集器、ParNew收集器、Parallel Scanvenge收集器。老年代收集器有：Serial Old收集器、Parallel Old收集器、CMS收集器。而G1收集器则是集新生代和老年代内存回收功能于一身的收集器。
