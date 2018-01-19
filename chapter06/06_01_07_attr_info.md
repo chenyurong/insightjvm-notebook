@@ -26,7 +26,26 @@
 
 |属性名称|使用位置|含义|
 |:---:|:---:|:---:|
-|||
+|Code|方法表|Java代码编译成的字节码指令|
+|ConstantValue|字段表|final关键字定义的常量池|
+|Deprecated|类，方法，字段表|被声明为deprecated的方法和字段|
+|Exceptions|方法表 |方法抛出的异常 |
+|EnclosingMethod|类文件 |仅当一个类为局部类或者匿名类是才能拥有这个属性，这个属性用于标识这个类所在的外围方法 |
+|InnerClass|类文件 |内部类列表 |
+|LineNumberTable|Code属性 |Java源码的行号与字节码指令的对应关系 |
+|LocalVariableTable|Code属性 |方法的局部便狼描述 |
+|StackMapTable|Code属性 |JDK1.6中新增的属性，供新的类型检查检验器检查和处理目标方法的局部变量和操作数有所需要的类是否匹配 |
+|Signature|类，方法表，字段表 | 用于支持泛型情况下的方法签名|
+|SourceFile|类文件 |记录源文件名称 |
+|SourceDebugExtension|类文件 |用于存储额外的调试信息 |
+|Synthetic|类，方法表，字段表 |标志方法或字段为编译器自动生成的 |
+|LocalVariableTypeTable|类 |使用特征签名代替描述符，是为了引入泛型语法之后能描述泛型参数化类型而添加 |
+|RuntimeVisibleAnnotations|类，方法表，字段表 |为动态注解提供支持 |
+|RuntimeInvisibleAnnotations|表，方法表，字段表 |用于指明哪些注解是运行时不可见的 |
+|RuntimeVisibleParameterAnnotation|方法表 |作用与RuntimeVisibleAnnotations属性类似，只不过作用对象为方法|
+|RuntimeInvisibleParameterAnnotation | 方法表| 作用与RuntimeInvisibleAnnotations属性类似，作用对象哪个为方法参数|
+|AnnotationDefault| 方法表|用于记录注解类元素的默认值 |
+|BootstrapMethods|类文件 |用于保存invokeddynamic指令引用的引导方式限定符 |
 
 虽然上面表中的每个属性都有其各自的数据结构，但其都需要通过一个u4的长度属性去说明属性值锁占用的位数。一个符合规则的属性表应该满足下表中所定义的结构。
 
